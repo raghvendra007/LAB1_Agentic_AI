@@ -1,0 +1,9 @@
+{
+  "config": "r4_128_a0.9",
+  "n_chunks": 1324,
+  "index_s": 0.37,
+  "embedding_cache_hit": true,
+  "query_ms": 766.29,
+  "query_tokens_avg": 18.4,
+  "context_tokens_avg": 554.1
+}
