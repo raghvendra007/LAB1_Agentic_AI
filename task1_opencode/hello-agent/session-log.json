@@ -1,0 +1,1447 @@
+{
+  "info": {
+    "id": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+    "slug": "lucky-harbor",
+    "projectID": "global",
+    "directory": "/Users/raghvendratiwari/Downloads/lab1 2/lab1/task1_opencode/hello-agent",
+    "path": "Downloads/lab1 2/lab1/task1_opencode/hello-agent",
+    "title": "Create and run hello.py greeting script",
+    "agent": "build",
+    "model": {
+      "id": "openai.gpt-6-luna",
+      "providerID": "upb"
+    },
+    "version": "1.19.5",
+    "summary": {
+      "additions": 0,
+      "deletions": 0,
+      "files": 0
+    },
+    "cost": 0.0018032800000000002,
+    "tokens": {
+      "input": 2048,
+      "output": 722,
+      "reasoning": 1073,
+      "cache": {
+        "read": 70098,
+        "write": 0
+      }
+    },
+    "time": {
+      "created": 1794600581390,
+      "updated": 1794600813302
+    }
+  },
+  "messages": [
+    {
+      "info": {
+        "role": "user",
+        "time": {
+          "created": 1794600581410
+        },
+        "agent": "build",
+        "model": {
+          "providerID": "upb",
+          "modelID": "openai.gpt-6-luna"
+        },
+        "summary": {
+          "diffs": [
+            {
+              "file": "Downloads/lab1 2/lab1/task1_opencode/hello-agent/hello.py",
+              "patch": "Index: Downloads/lab1 2/lab1/task1_opencode/hello-agent/hello.py\n===================================================================\n--- Downloads/lab1 2/lab1/task1_opencode/hello-agent/hello.py\t\n+++ Downloads/lab1 2/lab1/task1_opencode/hello-agent/hello.py\t\n@@ -0,0 +1,1 @@\n+print(\"Hello from our agent!\")\n",
+              "additions": 1,
+              "deletions": 0,
+              "status": "added"
+            }
+          ]
+        },
+        "id": "msg_1d687b922001ZQs9mrH8dXsJT4",
+        "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ"
+      },
+      "parts": [
+        {
+          "type": "text",
+          "text": "Create a Python script hello.py that prints \"Hello from our agent!\" and run it.",
+          "id": "prt_1d687b924001SyOMXNgzoT1Pil",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d687b922001ZQs9mrH8dXsJT4"
+        }
+      ]
+    },
+    {
+      "info": {
+        "parentID": "msg_1d687b922001ZQs9mrH8dXsJT4",
+        "role": "assistant",
+        "mode": "build",
+        "agent": "build",
+        "path": {
+          "cwd": "/Users/raghvendratiwari/Downloads/lab1 2/lab1/task1_opencode/hello-agent",
+          "root": "/Users/raghvendratiwari"
+        },
+        "cost": 0.00008093,
+        "tokens": {
+          "total": 5273,
+          "input": 3,
+          "output": 57,
+          "reasoning": 0,
+          "cache": {
+            "write": 0,
+            "read": 5213
+          }
+        },
+        "modelID": "openai.gpt-6-luna",
+        "providerID": "upb",
+        "time": {
+          "created": 1794600581423,
+          "completed": 1794600583826
+        },
+        "finish": "tool-calls",
+        "id": "msg_1d687b92f001ef9hkmc8fy7fjv",
+        "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ"
+      },
+      "parts": [
+        {
+          "snapshot": "ebebedc9cb014f809bcc5e7314072a373940a41b",
+          "type": "step-start",
+          "id": "prt_1d687bf4b001zI6qb29S0MS8nD",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d687b92f001ef9hkmc8fy7fjv"
+        },
+        {
+          "type": "tool",
+          "tool": "todowrite",
+          "callID": "call_F6wFocx6xO9fTw7vqUPfBu9s",
+          "state": {
+            "status": "completed",
+            "input": {
+              "todos": [
+                {
+                  "content": "Create hello.py with the requested greeting",
+                  "status": "in_progress",
+                  "priority": "high"
+                },
+                {
+                  "content": "Run hello.py and confirm its output",
+                  "status": "pending",
+                  "priority": "high"
+                }
+              ]
+            },
+            "output": "[\n  {\n    \"content\": \"Create hello.py with the requested greeting\",\n    \"status\": \"in_progress\",\n    \"priority\": \"high\"\n  },\n  {\n    \"content\": \"Run hello.py and confirm its output\",\n    \"status\": \"pending\",\n    \"priority\": \"high\"\n  }\n]",
+            "metadata": {
+              "todos": [
+                {
+                  "content": "Create hello.py with the requested greeting",
+                  "status": "in_progress",
+                  "priority": "high"
+                },
+                {
+                  "content": "Run hello.py and confirm its output",
+                  "status": "pending",
+                  "priority": "high"
+                }
+              ],
+              "truncated": false
+            },
+            "title": "2 todos",
+            "time": {
+              "start": 1794600583240,
+              "end": 1794600583241
+            }
+          },
+          "id": "prt_1d687bf4c001rkjsnTc1RjqJJI",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d687b92f001ef9hkmc8fy7fjv"
+        },
+        {
+          "reason": "tool-calls",
+          "snapshot": "ebebedc9cb014f809bcc5e7314072a373940a41b",
+          "type": "step-finish",
+          "tokens": {
+            "total": 5273,
+            "input": 3,
+            "output": 57,
+            "reasoning": 0,
+            "cache": {
+              "write": 0,
+              "read": 5213
+            }
+          },
+          "cost": 0.00008093,
+          "id": "prt_1d687c27f001t2ZDbl8tkc4DwW",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d687b92f001ef9hkmc8fy7fjv"
+        }
+      ]
+    },
+    {
+      "info": {
+        "parentID": "msg_1d687b922001ZQs9mrH8dXsJT4",
+        "role": "assistant",
+        "mode": "build",
+        "agent": "build",
+        "path": {
+          "cwd": "/Users/raghvendratiwari/Downloads/lab1 2/lab1/task1_opencode/hello-agent",
+          "root": "/Users/raghvendratiwari"
+        },
+        "cost": 0.00008743,
+        "tokens": {
+          "total": 5394,
+          "input": 138,
+          "output": 43,
+          "reasoning": 0,
+          "cache": {
+            "write": 0,
+            "read": 5213
+          }
+        },
+        "modelID": "openai.gpt-6-luna",
+        "providerID": "upb",
+        "time": {
+          "created": 1794600583827,
+          "completed": 1794600588060
+        },
+        "finish": "tool-calls",
+        "id": "msg_1d687c293001YGyb0Ut8TGbFFJ",
+        "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ"
+      },
+      "parts": [
+        {
+          "snapshot": "ebebedc9cb014f809bcc5e7314072a373940a41b",
+          "type": "step-start",
+          "id": "prt_1d687cb11001lcDtqyT799CoTO",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d687c293001YGyb0Ut8TGbFFJ"
+        },
+        {
+          "type": "tool",
+          "tool": "apply_patch",
+          "callID": "call_x2nIPWySrgTz6IWJTC2okf2j",
+          "state": {
+            "status": "completed",
+            "input": {
+              "patchText": "*** Begin Patch\n*** Add File: hello.py\n+print(\"Hello from our agent!\")\n*** End Patch"
+            },
+            "output": "Success. Updated the following files:\nA Downloads/lab1 2/lab1/task1_opencode/hello-agent/hello.py",
+            "metadata": {
+              "diff": "Index: /Users/raghvendratiwari/Downloads/lab1 2/lab1/task1_opencode/hello-agent/hello.py\n===================================================================\n--- /Users/raghvendratiwari/Downloads/lab1 2/lab1/task1_opencode/hello-agent/hello.py\n+++ /Users/raghvendratiwari/Downloads/lab1 2/lab1/task1_opencode/hello-agent/hello.py\n@@ -0,0 +1,1 @@\n+print(\"Hello from our agent!\")\n\n",
+              "files": [
+                {
+                  "filePath": "/Users/raghvendratiwari/Downloads/lab1 2/lab1/task1_opencode/hello-agent/hello.py",
+                  "relativePath": "Downloads/lab1 2/lab1/task1_opencode/hello-agent/hello.py",
+                  "type": "add",
+                  "patch": "Index: /Users/raghvendratiwari/Downloads/lab1 2/lab1/task1_opencode/hello-agent/hello.py\n===================================================================\n--- /Users/raghvendratiwari/Downloads/lab1 2/lab1/task1_opencode/hello-agent/hello.py\n+++ /Users/raghvendratiwari/Downloads/lab1 2/lab1/task1_opencode/hello-agent/hello.py\n@@ -0,0 +1,1 @@\n+print(\"Hello from our agent!\")\n",
+                  "additions": 1,
+                  "deletions": 0
+                }
+              ],
+              "diagnostics": {},
+              "truncated": false
+            },
+            "title": "Success. Updated the following files:\nA Downloads/lab1 2/lab1/task1_opencode/hello-agent/hello.py",
+            "time": {
+              "start": 1794600586251,
+              "end": 1794600587977
+            }
+          },
+          "id": "prt_1d687cb14001pmGt8NXqT9OXCU",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d687c293001YGyb0Ut8TGbFFJ"
+        },
+        {
+          "reason": "tool-calls",
+          "snapshot": "1246fa182b83da4598ef40d2bb30657c74fd8213",
+          "type": "step-finish",
+          "tokens": {
+            "total": 5394,
+            "input": 138,
+            "output": 43,
+            "reasoning": 0,
+            "cache": {
+              "write": 0,
+              "read": 5213
+            }
+          },
+          "cost": 0.00008743,
+          "id": "prt_1d687d300001f7OsNCjdosi36y",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d687c293001YGyb0Ut8TGbFFJ"
+        },
+        {
+          "type": "patch",
+          "hash": "ebebedc9cb014f809bcc5e7314072a373940a41b",
+          "files": [
+            "/Users/raghvendratiwari/Downloads/lab1 2/lab1/task1_opencode/hello-agent/hello.py"
+          ],
+          "id": "prt_1d687d31b001Xt3r3fJBuHcyVb",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d687c293001YGyb0Ut8TGbFFJ"
+        }
+      ]
+    },
+    {
+      "info": {
+        "parentID": "msg_1d687b922001ZQs9mrH8dXsJT4",
+        "role": "assistant",
+        "mode": "build",
+        "agent": "build",
+        "path": {
+          "cwd": "/Users/raghvendratiwari/Downloads/lab1 2/lab1/task1_opencode/hello-agent",
+          "root": "/Users/raghvendratiwari"
+        },
+        "cost": 0.00008688,
+        "tokens": {
+          "total": 5482,
+          "input": 84,
+          "output": 50,
+          "reasoning": 0,
+          "cache": {
+            "write": 0,
+            "read": 5348
+          }
+        },
+        "modelID": "openai.gpt-6-luna",
+        "providerID": "upb",
+        "time": {
+          "created": 1794600588061,
+          "completed": 1794600590502
+        },
+        "finish": "tool-calls",
+        "id": "msg_1d687d31d0012vGFPVB5P3QRjE",
+        "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ"
+      },
+      "parts": [
+        {
+          "snapshot": "1246fa182b83da4598ef40d2bb30657c74fd8213",
+          "type": "step-start",
+          "id": "prt_1d687d750001sAFFFO1BS3ErKY",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d687d31d0012vGFPVB5P3QRjE"
+        },
+        {
+          "type": "tool",
+          "tool": "bash",
+          "callID": "call_t455a3L6rsexREzQg3u94dVT",
+          "state": {
+            "status": "completed",
+            "input": {
+              "command": "python3 hello.py",
+              "workdir": "/Users/raghvendratiwari/Downloads/lab1 2/lab1/task1_opencode/hello-agent"
+            },
+            "output": "Hello from our agent!\n",
+            "metadata": {
+              "output": "Hello from our agent!\n",
+              "exit": 0,
+              "truncated": false
+            },
+            "title": "python3 hello.py",
+            "time": {
+              "start": 1794600589393,
+              "end": 1794600590212
+            }
+          },
+          "id": "prt_1d687d751001Xk44nhV1xwyAg7",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d687d31d0012vGFPVB5P3QRjE"
+        },
+        {
+          "reason": "tool-calls",
+          "snapshot": "1246fa182b83da4598ef40d2bb30657c74fd8213",
+          "type": "step-finish",
+          "tokens": {
+            "total": 5482,
+            "input": 84,
+            "output": 50,
+            "reasoning": 0,
+            "cache": {
+              "write": 0,
+              "read": 5348
+            }
+          },
+          "cost": 0.00008688,
+          "id": "prt_1d687dc8e001NCivvls1MCg2YV",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d687d31d0012vGFPVB5P3QRjE"
+        }
+      ]
+    },
+    {
+      "info": {
+        "parentID": "msg_1d687b922001ZQs9mrH8dXsJT4",
+        "role": "assistant",
+        "mode": "build",
+        "agent": "build",
+        "path": {
+          "cwd": "/Users/raghvendratiwari/Downloads/lab1 2/lab1/task1_opencode/hello-agent",
+          "root": "/Users/raghvendratiwari"
+        },
+        "cost": 0.00008919,
+        "tokens": {
+          "total": 5554,
+          "input": 69,
+          "output": 56,
+          "reasoning": 0,
+          "cache": {
+            "write": 0,
+            "read": 5429
+          }
+        },
+        "modelID": "openai.gpt-6-luna",
+        "providerID": "upb",
+        "time": {
+          "created": 1794600590504,
+          "completed": 1794600593847
+        },
+        "finish": "tool-calls",
+        "id": "msg_1d687dca8001XE0JOBYCZNY6Dp",
+        "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ"
+      },
+      "parts": [
+        {
+          "snapshot": "1246fa182b83da4598ef40d2bb30657c74fd8213",
+          "type": "step-start",
+          "id": "prt_1d687e63b001NbROa5eM9N7ijP",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d687dca8001XE0JOBYCZNY6Dp"
+        },
+        {
+          "type": "tool",
+          "tool": "todowrite",
+          "callID": "call_609FAy4fQSoGqEE6uFTpUpmK",
+          "state": {
+            "status": "completed",
+            "input": {
+              "todos": [
+                {
+                  "content": "Create hello.py with the requested greeting",
+                  "status": "completed",
+                  "priority": "high"
+                },
+                {
+                  "content": "Run hello.py and confirm its output",
+                  "status": "completed",
+                  "priority": "high"
+                }
+              ]
+            },
+            "output": "[\n  {\n    \"content\": \"Create hello.py with the requested greeting\",\n    \"status\": \"completed\",\n    \"priority\": \"high\"\n  },\n  {\n    \"content\": \"Run hello.py and confirm its output\",\n    \"status\": \"completed\",\n    \"priority\": \"high\"\n  }\n]",
+            "metadata": {
+              "todos": [
+                {
+                  "content": "Create hello.py with the requested greeting",
+                  "status": "completed",
+                  "priority": "high"
+                },
+                {
+                  "content": "Run hello.py and confirm its output",
+                  "status": "completed",
+                  "priority": "high"
+                }
+              ],
+              "truncated": false
+            },
+            "title": "0 todos",
+            "time": {
+              "start": 1794600593233,
+              "end": 1794600593236
+            }
+          },
+          "id": "prt_1d687e63e001Rd9Xg3JV81vJ4R",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d687dca8001XE0JOBYCZNY6Dp"
+        },
+        {
+          "reason": "tool-calls",
+          "snapshot": "1246fa182b83da4598ef40d2bb30657c74fd8213",
+          "type": "step-finish",
+          "tokens": {
+            "total": 5554,
+            "input": 69,
+            "output": 56,
+            "reasoning": 0,
+            "cache": {
+              "write": 0,
+              "read": 5429
+            }
+          },
+          "cost": 0.00008919,
+          "id": "prt_1d687e99d001CW9X8C96NJ96Vj",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d687dca8001XE0JOBYCZNY6Dp"
+        }
+      ]
+    },
+    {
+      "info": {
+        "parentID": "msg_1d687b922001ZQs9mrH8dXsJT4",
+        "role": "assistant",
+        "mode": "build",
+        "agent": "build",
+        "path": {
+          "cwd": "/Users/raghvendratiwari/Downloads/lab1 2/lab1/task1_opencode/hello-agent",
+          "root": "/Users/raghvendratiwari"
+        },
+        "cost": 0.00008105,
+        "tokens": {
+          "total": 5656,
+          "input": 136,
+          "output": 25,
+          "reasoning": 0,
+          "cache": {
+            "write": 0,
+            "read": 5495
+          }
+        },
+        "modelID": "openai.gpt-6-luna",
+        "providerID": "upb",
+        "time": {
+          "created": 1794600593848,
+          "completed": 1794600595756
+        },
+        "finish": "stop",
+        "id": "msg_1d687e9b80018DTTnopSbCQzVQ",
+        "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ"
+      },
+      "parts": [
+        {
+          "snapshot": "1246fa182b83da4598ef40d2bb30657c74fd8213",
+          "type": "step-start",
+          "id": "prt_1d687edd600111gyRwJzpWN8RP",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d687e9b80018DTTnopSbCQzVQ"
+        },
+        {
+          "type": "text",
+          "text": "Created `hello.py` and ran it successfully. Output:\n\n```text\nHello from our agent!\n```",
+          "time": {
+            "start": 1794600594905,
+            "end": 1794600595694
+          },
+          "id": "prt_1d687edd9001XfECKSqZCCa0pL",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d687e9b80018DTTnopSbCQzVQ"
+        },
+        {
+          "reason": "stop",
+          "snapshot": "1246fa182b83da4598ef40d2bb30657c74fd8213",
+          "type": "step-finish",
+          "tokens": {
+            "total": 5656,
+            "input": 136,
+            "output": 25,
+            "reasoning": 0,
+            "cache": {
+              "write": 0,
+              "read": 5495
+            }
+          },
+          "cost": 0.00008105,
+          "id": "prt_1d687f113001UNXUuGUNxrqk7C",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d687e9b80018DTTnopSbCQzVQ"
+        }
+      ]
+    },
+    {
+      "info": {
+        "role": "user",
+        "time": {
+          "created": 1794600624360
+        },
+        "agent": "build",
+        "model": {
+          "providerID": "upb",
+          "modelID": "openai.gpt-6-luna"
+        },
+        "summary": {
+          "diffs": []
+        },
+        "id": "msg_1d68860e80017YT6DnC6BbQ7so",
+        "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ"
+      },
+      "parts": [
+        {
+          "type": "text",
+          "text": "give me command to get the log of this session",
+          "id": "prt_1d68860e90014jpZKciIuS3Ro6",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d68860e80017YT6DnC6BbQ7so"
+        }
+      ]
+    },
+    {
+      "info": {
+        "parentID": "msg_1d68860e80017YT6DnC6BbQ7so",
+        "role": "assistant",
+        "mode": "build",
+        "agent": "build",
+        "path": {
+          "cwd": "/Users/raghvendratiwari/Downloads/lab1 2/lab1/task1_opencode/hello-agent",
+          "root": "/Users/raghvendratiwari"
+        },
+        "cost": 0.00030768,
+        "tokens": {
+          "total": 6166,
+          "input": 44,
+          "output": 41,
+          "reasoning": 453,
+          "cache": {
+            "write": 0,
+            "read": 5628
+          }
+        },
+        "modelID": "openai.gpt-6-luna",
+        "providerID": "upb",
+        "time": {
+          "created": 1794600624366,
+          "completed": 1794600630126
+        },
+        "finish": "stop",
+        "id": "msg_1d68860ee001NVlvjRjBlYbreB",
+        "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ"
+      },
+      "parts": [
+        {
+          "snapshot": "1246fa182b83da4598ef40d2bb30657c74fd8213",
+          "type": "step-start",
+          "id": "prt_1d68873f8001VDed5RmvpLEty1",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d68860ee001NVlvjRjBlYbreB"
+        },
+        {
+          "type": "text",
+          "text": "Use:\n\n```bash\nopencode export <session-id>\n```\n\nThat exports the session log as JSON. Without an ID, `opencode export` exports all sessions.",
+          "time": {
+            "start": 1794600629242,
+            "end": 1794600630068
+          },
+          "id": "prt_1d68873fa001ZGEZCg07JU7ZLG",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d68860ee001NVlvjRjBlYbreB"
+        },
+        {
+          "reason": "stop",
+          "snapshot": "1246fa182b83da4598ef40d2bb30657c74fd8213",
+          "type": "step-finish",
+          "tokens": {
+            "total": 6166,
+            "input": 44,
+            "output": 41,
+            "reasoning": 453,
+            "cache": {
+              "write": 0,
+              "read": 5628
+            }
+          },
+          "cost": 0.00030768,
+          "id": "prt_1d6887756001W3uMOABPROQX0Q",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d68860ee001NVlvjRjBlYbreB"
+        }
+      ]
+    },
+    {
+      "info": {
+        "role": "user",
+        "time": {
+          "created": 1794600645358
+        },
+        "agent": "build",
+        "model": {
+          "providerID": "upb",
+          "modelID": "openai.gpt-6-luna"
+        },
+        "summary": {
+          "diffs": []
+        },
+        "id": "msg_1d688b2ee001p5oUufLIIilDVG",
+        "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ"
+      },
+      "parts": [
+        {
+          "type": "text",
+          "text": "opencode export <session-id>",
+          "id": "prt_1d688b2ee002f1TI3RBaGyJAn5",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d688b2ee001p5oUufLIIilDVG"
+        }
+      ]
+    },
+    {
+      "info": {
+        "parentID": "msg_1d688b2ee001p5oUufLIIilDVG",
+        "role": "assistant",
+        "mode": "build",
+        "agent": "build",
+        "path": {
+          "cwd": "/Users/raghvendratiwari/Downloads/lab1 2/lab1/task1_opencode/hello-agent",
+          "root": "/Users/raghvendratiwari"
+        },
+        "cost": 0.00022669,
+        "tokens": {
+          "total": 6053,
+          "input": 55,
+          "output": 51,
+          "reasoning": 278,
+          "cache": {
+            "write": 0,
+            "read": 5669
+          }
+        },
+        "modelID": "openai.gpt-6-luna",
+        "providerID": "upb",
+        "time": {
+          "created": 1794600645364,
+          "completed": 1794600650013
+        },
+        "finish": "stop",
+        "id": "msg_1d688b2f4001vdn83ZUbN0alMQ",
+        "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ"
+      },
+      "parts": [
+        {
+          "snapshot": "1246fa182b83da4598ef40d2bb30657c74fd8213",
+          "type": "step-start",
+          "id": "prt_1d688c14d001ZN1LrWBh716i53",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d688b2f4001vdn83ZUbN0alMQ"
+        },
+        {
+          "type": "text",
+          "text": "Replace `<session-id>` with the actual session ID—don’t type the angle brackets:\n\n```bash\nopencode export YOUR_SESSION_ID\n```\n\nTo export all sessions, run:\n\n```bash\nopencode export\n```",
+          "time": {
+            "start": 1794600649039,
+            "end": 1794600649952
+          },
+          "id": "prt_1d688c14f001dM6SeZ4VNkSlpi",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d688b2f4001vdn83ZUbN0alMQ"
+        },
+        {
+          "reason": "stop",
+          "snapshot": "1246fa182b83da4598ef40d2bb30657c74fd8213",
+          "type": "step-finish",
+          "tokens": {
+            "total": 6053,
+            "input": 55,
+            "output": 51,
+            "reasoning": 278,
+            "cache": {
+              "write": 0,
+              "read": 5669
+            }
+          },
+          "cost": 0.00022669,
+          "id": "prt_1d688c503001S7pTvwLbkzrxiR",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d688b2f4001vdn83ZUbN0alMQ"
+        }
+      ]
+    },
+    {
+      "info": {
+        "role": "user",
+        "time": {
+          "created": 1794600656661
+        },
+        "agent": "build",
+        "model": {
+          "providerID": "upb",
+          "modelID": "openai.gpt-6-luna"
+        },
+        "summary": {
+          "diffs": []
+        },
+        "id": "msg_1d688df15001IqYsTyuYQf0dBg",
+        "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ"
+      },
+      "parts": [
+        {
+          "type": "text",
+          "text": "opencode export",
+          "id": "prt_1d688df16001nrDqdI4MSUaycq",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d688df15001IqYsTyuYQf0dBg"
+        }
+      ]
+    },
+    {
+      "info": {
+        "parentID": "msg_1d688df15001IqYsTyuYQf0dBg",
+        "role": "assistant",
+        "mode": "build",
+        "agent": "build",
+        "path": {
+          "cwd": "/Users/raghvendratiwari/Downloads/lab1 2/lab1/task1_opencode/hello-agent",
+          "root": "/Users/raghvendratiwari"
+        },
+        "cost": 0,
+        "tokens": {
+          "input": 0,
+          "output": 0,
+          "reasoning": 0,
+          "cache": {
+            "read": 0,
+            "write": 0
+          }
+        },
+        "modelID": "openai.gpt-6-luna",
+        "providerID": "upb",
+        "time": {
+          "created": 1794600656668,
+          "completed": 1794600766065
+        },
+        "error": {
+          "name": "MessageAbortedError",
+          "data": {
+            "message": "Aborted"
+          }
+        },
+        "id": "msg_1d688df1c001Gr1YYcXx36JARD",
+        "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ"
+      },
+      "parts": [
+        {
+          "snapshot": "1246fa182b83da4598ef40d2bb30657c74fd8213",
+          "type": "step-start",
+          "id": "prt_1d688e6d8001nvW3hu09RNX29p",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d688df1c001Gr1YYcXx36JARD"
+        },
+        {
+          "type": "tool",
+          "tool": "bash",
+          "callID": "call_ePuJe8PU76iqGcGkzLdQzIID",
+          "state": {
+            "status": "completed",
+            "input": {
+              "command": "opencode export",
+              "workdir": "/Users/raghvendratiwari/Downloads/lab1 2/lab1/task1_opencode/hello-agent"
+            },
+            "output": "Exporting session: latest\n\u001b[0m\n┌  Export session\n\u001b[?25l│\n◆  Select session to export\n\n│  Search: _\n│  ● Create and run hello.py greeting script (11/13/2026, 9:10:56 PM • 5eRz5AJZ)\n│  ○ Creating and running hello.py\n│  ○ New session - 2026-11-13T19:45:02.389Z\n│  ○ New session - 2026-11-13T19:43:19.173Z\n│  ↑/↓ to select • Enter: confirm • Type: to search\n└\n\n<shell_metadata>\nUser aborted the command\n</shell_metadata>",
+            "metadata": {
+              "output": "Exporting session: latest\n\u001b[0m\n┌  Export session\n\u001b[?25l│\n◆  Select session to export\n\n│  Search: _\n│  ● Create and run hello.py greeting script (11/13/2026, 9:10:56 PM • 5eRz5AJZ)\n│  ○ Creating and running hello.py\n│  ○ New session - 2026-11-13T19:45:02.389Z\n│  ○ New session - 2026-11-13T19:43:19.173Z\n│  ↑/↓ to select • Enter: confirm • Type: to search\n└",
+              "exit": null,
+              "truncated": false
+            },
+            "title": "opencode export",
+            "time": {
+              "start": 1794600658856,
+              "end": 1794600766036
+            }
+          },
+          "id": "prt_1d688e6da001r9qTtaZoS3gV3p",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d688df1c001Gr1YYcXx36JARD"
+        }
+      ]
+    },
+    {
+      "info": {
+        "role": "user",
+        "time": {
+          "created": 1794600752562
+        },
+        "agent": "build",
+        "model": {
+          "providerID": "upb",
+          "modelID": "openai.gpt-6-luna"
+        },
+        "id": "msg_1d68a55b2001uJUS1GqsM6ZHM6",
+        "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ"
+      },
+      "parts": [
+        {
+          "type": "text",
+          "text": "i need a text file with logs give me that",
+          "id": "prt_1d68a55b2002Hmw4Z1n2PncXI9",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d68a55b2001uJUS1GqsM6ZHM6"
+        }
+      ]
+    },
+    {
+      "info": {
+        "role": "user",
+        "time": {
+          "created": 1794600772706
+        },
+        "agent": "build",
+        "model": {
+          "providerID": "upb",
+          "modelID": "openai.gpt-6-luna"
+        },
+        "summary": {
+          "diffs": []
+        },
+        "id": "msg_1d68aa462001Ymk6ypBMixO0dy",
+        "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ"
+      },
+      "parts": [
+        {
+          "type": "text",
+          "text": "i need a text file with logs give me that",
+          "id": "prt_1d68aa463001UOe4wfDgkVpvlq",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d68aa462001Ymk6ypBMixO0dy"
+        }
+      ]
+    },
+    {
+      "info": {
+        "parentID": "msg_1d68aa462001Ymk6ypBMixO0dy",
+        "role": "assistant",
+        "mode": "build",
+        "agent": "build",
+        "path": {
+          "cwd": "/Users/raghvendratiwari/Downloads/lab1 2/lab1/task1_opencode/hello-agent",
+          "root": "/Users/raghvendratiwari"
+        },
+        "cost": 0.00015579,
+        "tokens": {
+          "total": 6175,
+          "input": 250,
+          "output": 84,
+          "reasoning": 62,
+          "cache": {
+            "write": 0,
+            "read": 5779
+          }
+        },
+        "modelID": "openai.gpt-6-luna",
+        "providerID": "upb",
+        "time": {
+          "created": 1794600772719,
+          "completed": 1794600775831
+        },
+        "finish": "tool-calls",
+        "id": "msg_1d68aa46f001VT2m7HUqO9vvpL",
+        "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ"
+      },
+      "parts": [
+        {
+          "snapshot": "1246fa182b83da4598ef40d2bb30657c74fd8213",
+          "type": "step-start",
+          "id": "prt_1d68aac43001izSVe9wSuOqXyZ",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d68aa46f001VT2m7HUqO9vvpL"
+        },
+        {
+          "type": "tool",
+          "tool": "todowrite",
+          "callID": "call_OZIAjlBwmEiAaT6hBMQHEvkb",
+          "state": {
+            "status": "completed",
+            "input": {
+              "todos": [
+                {
+                  "content": "Check OpenCode export options for writing session logs to a file",
+                  "status": "in_progress",
+                  "priority": "high"
+                },
+                {
+                  "content": "Export the current session log to a text file",
+                  "status": "pending",
+                  "priority": "high"
+                },
+                {
+                  "content": "Verify the file contains the session log",
+                  "status": "pending",
+                  "priority": "medium"
+                }
+              ]
+            },
+            "output": "[\n  {\n    \"content\": \"Check OpenCode export options for writing session logs to a file\",\n    \"status\": \"in_progress\",\n    \"priority\": \"high\"\n  },\n  {\n    \"content\": \"Export the current session log to a text file\",\n    \"status\": \"pending\",\n    \"priority\": \"high\"\n  },\n  {\n    \"content\": \"Verify the file contains the session log\",\n    \"status\": \"pending\",\n    \"priority\": \"medium\"\n  }\n]",
+            "metadata": {
+              "todos": [
+                {
+                  "content": "Check OpenCode export options for writing session logs to a file",
+                  "status": "in_progress",
+                  "priority": "high"
+                },
+                {
+                  "content": "Export the current session log to a text file",
+                  "status": "pending",
+                  "priority": "high"
+                },
+                {
+                  "content": "Verify the file contains the session log",
+                  "status": "pending",
+                  "priority": "medium"
+                }
+              ],
+              "truncated": false
+            },
+            "title": "3 todos",
+            "time": {
+              "start": 1794600775111,
+              "end": 1794600775113
+            }
+          },
+          "id": "prt_1d68aac45001JmuCL5wll2FtJk",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d68aa46f001VT2m7HUqO9vvpL"
+        },
+        {
+          "reason": "tool-calls",
+          "snapshot": "1246fa182b83da4598ef40d2bb30657c74fd8213",
+          "type": "step-finish",
+          "tokens": {
+            "total": 6175,
+            "input": 250,
+            "output": 84,
+            "reasoning": 62,
+            "cache": {
+              "write": 0,
+              "read": 5779
+            }
+          },
+          "cost": 0.00015579,
+          "id": "prt_1d68ab07e001gxwXWeyOIWgnQs",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d68aa46f001VT2m7HUqO9vvpL"
+        }
+      ]
+    },
+    {
+      "info": {
+        "parentID": "msg_1d68aa462001Ymk6ypBMixO0dy",
+        "role": "assistant",
+        "mode": "build",
+        "agent": "build",
+        "path": {
+          "cwd": "/Users/raghvendratiwari/Downloads/lab1 2/lab1/task1_opencode/hello-agent",
+          "root": "/Users/raghvendratiwari"
+        },
+        "cost": 0.00015286,
+        "tokens": {
+          "total": 6372,
+          "input": 201,
+          "output": 115,
+          "reasoning": 30,
+          "cache": {
+            "write": 0,
+            "read": 6026
+          }
+        },
+        "modelID": "openai.gpt-6-luna",
+        "providerID": "upb",
+        "time": {
+          "created": 1794600775832,
+          "completed": 1794600794475
+        },
+        "finish": "tool-calls",
+        "id": "msg_1d68ab098001J7vTv4DQRMZIDr",
+        "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ"
+      },
+      "parts": [
+        {
+          "snapshot": "1246fa182b83da4598ef40d2bb30657c74fd8213",
+          "type": "step-start",
+          "id": "prt_1d68ab7fb001I4CBkycx3MAHZW",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d68ab098001J7vTv4DQRMZIDr"
+        },
+        {
+          "type": "tool",
+          "tool": "bash",
+          "callID": "call_hOmqwO3ODDW3yqxBWftLYAAY",
+          "state": {
+            "status": "completed",
+            "input": {
+              "command": "opencode export --help",
+              "workdir": "/Users/raghvendratiwari/Downloads/lab1 2/lab1/task1_opencode/hello-agent"
+            },
+            "output": "opencode export [sessionID]\n\nexport session data as JSON\n\nPositionals:\n  sessionID  session id to export                                                           [string]\n\nOptions:\n  -h, --help        show help                                                              [boolean]\n  -v, --version     show version number                                                    [boolean]\n      --print-logs  print logs to stderr                                                   [boolean]\n      --log-level   log level                   [string] [choices: \"DEBUG\", \"INFO\", \"WARN\", \"ERROR\"]\n      --pure        run without external plugins                                           [boolean]\n      --sanitize    redact sensitive transcript and file data                              [boolean]",
+            "metadata": {
+              "output": "opencode export [sessionID]\n\nexport session data as JSON\n\nPositionals:\n  sessionID  session id to export                                                           [string]\n\nOptions:\n  -h, --help        show help                                                              [boolean]\n  -v, --version     show version number                                                    [boolean]\n      --print-logs  print logs to stderr                                                   [boolean]\n      --log-level   log level                   [string] [choices: \"DEBUG\", \"INFO\", \"WARN\", \"ERROR\"]\n      --pure        run without external plugins                                           [boolean]\n      --sanitize    redact sensitive transcript and file data                              [boolean]",
+              "exit": 0,
+              "truncated": false
+            },
+            "title": "opencode export --help",
+            "time": {
+              "start": 1794600777730,
+              "end": 1794600789573
+            }
+          },
+          "id": "prt_1d68ab7fd001lyG7uQxdvfXgaG",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d68ab098001J7vTv4DQRMZIDr"
+        },
+        {
+          "type": "tool",
+          "tool": "bash",
+          "callID": "call_Q2RhLObnYMY6YU5PPQaRAkpk",
+          "state": {
+            "status": "completed",
+            "input": {
+              "command": "git status --short",
+              "workdir": "/Users/raghvendratiwari/Downloads/lab1 2/lab1/task1_opencode/hello-agent"
+            },
+            "output": "warning: could not open directory '.Trash/': Operation not permitted\n?? \"../../../../../ Volleyball_Players_Clustering_3.R\"\n?? ../../../../../.CFUserTextEncoding\n?? ../../../../../.DS_Store\n?? ../../../../../.RData\n?? ../../../../../.Rhistory\n?? ../../../../../.anaconda/\n?? ../../../../../.antigravity-ide/\n?? ../../../../../.bash_profile\n?? ../../../../../.cache/\n?? ../../../../../.conda/\n?? ../../../../../.config/\n?? ../../../../../.continuum/\n?? ../../../../../.cups/\n?? ../../../../../.cursor/\n?? ../../../../../.docker/\n?? ../../../../../.gemini/\n?? ../../../../../.gitconfig\n?? ../../../../../.ipynb_checkpoints/\n?? ../../../../../.ipython/\n?? ../../../../../.jupyter/\n?? ../../../../../.local/\n?? ../../../../../.matplotlib/\n?? ../../../../../.npm/\n?? ../../../../../.python_history\n?? ../../../../../.ssh/\n?? ../../../../../.tcshrc\n?? ../../../../../.viminfo\n?? ../../../../../.virtual_documents/\n?? ../../../../../.vscode/\n?? ../../../../../.xonshrc\n?? ../../../../../.zcompdump\n?? ../../../../../.zprofile\n?? ../../../../../.zsh_history\n?? ../../../../../.zsh_sessions/\n?? ../../../../../.zshrc\n?? ../../../../../Applications/\n?? ../../../../../Desktop/\n?? ../../../../../Documents/\n?? ../../../../\n?? ../../../../../LearnLL.py\n?? ../../../../../Library/\n?? ../../../../../ML.ipynb\n?? ../../../../../Movies/\n?? ../../../../../Music/\n?? ../../../../../Pictures/\n?? ../../../../../Public/\n?? ../../../../../SE_Test/\n?? ../../../../../Untitled-1.ipynb\n?? ../../../../../Untitled.ipynb\n?? ../../../../../Untitled1.ipynb\n?? ../../../../../Untitled2.ipynb\n?? ../../../../../Untitled3.ipynb\n?? ../../../../../Untitled4.ipynb\n?? ../../../../../Untitled5.ipynb\n?? ../../../../../Untitled6.ipynb\n?? ../../../../../anaconda_projects/\n?? ../../../../../car_plot.png\n?? ../../../../../election_plots.pdf\n?? ../../../../../embedEtcd.yaml\n?? ../../../../../examPrtice.R\n?? ../../../../../scikit_learn_data/\n?? ../../../../../standalone_embed.sh\n?? ../../../../../user.yaml\n?? ../../../../../volumes/\n",
+            "metadata": {
+              "output": "warning: could not open directory '.Trash/': Operation not permitted\n?? \"../../../../../ Volleyball_Players_Clustering_3.R\"\n?? ../../../../../.CFUserTextEncoding\n?? ../../../../../.DS_Store\n?? ../../../../../.RData\n?? ../../../../../.Rhistory\n?? ../../../../../.anaconda/\n?? ../../../../../.antigravity-ide/\n?? ../../../../../.bash_profile\n?? ../../../../../.cache/\n?? ../../../../../.conda/\n?? ../../../../../.config/\n?? ../../../../../.continuum/\n?? ../../../../../.cups/\n?? ../../../../../.cursor/\n?? ../../../../../.docker/\n?? ../../../../../.gemini/\n?? ../../../../../.gitconfig\n?? ../../../../../.ipynb_checkpoints/\n?? ../../../../../.ipython/\n?? ../../../../../.jupyter/\n?? ../../../../../.local/\n?? ../../../../../.matplotlib/\n?? ../../../../../.npm/\n?? ../../../../../.python_history\n?? ../../../../../.ssh/\n?? ../../../../../.tcshrc\n?? ../../../../../.viminfo\n?? ../../../../../.virtual_documents/\n?? ../../../../../.vscode/\n?? ../../../../../.xonshrc\n?? ../../../../../.zcompdump\n?? ../../../../../.zprofile\n?? ../../../../../.zsh_history\n?? ../../../../../.zsh_sessions/\n?? ../../../../../.zshrc\n?? ../../../../../Applications/\n?? ../../../../../Desktop/\n?? ../../../../../Documents/\n?? ../../../../\n?? ../../../../../LearnLL.py\n?? ../../../../../Library/\n?? ../../../../../ML.ipynb\n?? ../../../../../Movies/\n?? ../../../../../Music/\n?? ../../../../../Pictures/\n?? ../../../../../Public/\n?? ../../../../../SE_Test/\n?? ../../../../../Untitled-1.ipynb\n?? ../../../../../Untitled.ipynb\n?? ../../../../../Untitled1.ipynb\n?? ../../../../../Untitled2.ipynb\n?? ../../../../../Untitled3.ipynb\n?? ../../../../../Untitled4.ipynb\n?? ../../../../../Untitled5.ipynb\n?? ../../../../../Untitled6.ipynb\n?? ../../../../../anaconda_projects/\n?? ../../../../../car_plot.png\n?? ../../../../../election_plots.pdf\n?? ../../../../../embedEtcd.yaml\n?? ../../../../../examPrtice.R\n?? ../../../../../scikit_learn_data/\n?? ../../../../../standalone_embed.sh\n?? ../../../../../user.yaml\n?? ../../../../../volumes/\n",
+              "exit": 0,
+              "truncated": false
+            },
+            "title": "git status --short",
+            "time": {
+              "start": 1794600777735,
+              "end": 1794600794432
+            }
+          },
+          "id": "prt_1d68ab804001mH6TfTlGwe6E2x",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d68ab098001J7vTv4DQRMZIDr"
+        },
+        {
+          "reason": "tool-calls",
+          "snapshot": "1246fa182b83da4598ef40d2bb30657c74fd8213",
+          "type": "step-finish",
+          "tokens": {
+            "total": 6372,
+            "input": 201,
+            "output": 115,
+            "reasoning": 30,
+            "cache": {
+              "write": 0,
+              "read": 6026
+            }
+          },
+          "cost": 0.00015286,
+          "id": "prt_1d68af95a001OSmtJCEpJGLR5Y",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d68ab098001J7vTv4DQRMZIDr"
+        }
+      ]
+    },
+    {
+      "info": {
+        "parentID": "msg_1d68aa462001Ymk6ypBMixO0dy",
+        "role": "assistant",
+        "mode": "build",
+        "agent": "build",
+        "path": {
+          "cwd": "/Users/raghvendratiwari/Downloads/lab1 2/lab1/task1_opencode/hello-agent",
+          "root": "/Users/raghvendratiwari"
+        },
+        "cost": 0.00029224,
+        "tokens": {
+          "total": 7280,
+          "input": 745,
+          "output": 97,
+          "reasoning": 214,
+          "cache": {
+            "write": 0,
+            "read": 6224
+          }
+        },
+        "modelID": "openai.gpt-6-luna",
+        "providerID": "upb",
+        "time": {
+          "created": 1794600794476,
+          "completed": 1794600800467
+        },
+        "finish": "tool-calls",
+        "id": "msg_1d68af96c0012M2PcNxzy3h8y9",
+        "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ"
+      },
+      "parts": [
+        {
+          "snapshot": "1246fa182b83da4598ef40d2bb30657c74fd8213",
+          "type": "step-start",
+          "id": "prt_1d68b05e5001Q0n6kBzhS48OF0",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d68af96c0012M2PcNxzy3h8y9"
+        },
+        {
+          "type": "text",
+          "text": "I found the session ID from the export menu. I’ll export that session and save a readable transcript as a `.txt` file in the project folder.",
+          "time": {
+            "start": 1794600797670,
+            "end": 1794600798934
+          },
+          "id": "prt_1d68b05e6001Jm3zzRSai8oyM3",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d68af96c0012M2PcNxzy3h8y9"
+        },
+        {
+          "type": "tool",
+          "tool": "bash",
+          "callID": "call_1HPKiu2fA5d2EAWOd92ZvovD",
+          "state": {
+            "status": "completed",
+            "input": {
+              "command": "opencode export 5eRz5AJZ",
+              "workdir": "/Users/raghvendratiwari/Downloads/lab1 2/lab1/task1_opencode/hello-agent"
+            },
+            "output": "\u001b[91m\u001b[1mError: \u001b[0mUnexpected error\n\nExpected a string starting with \"ses\", got \"5eRz5AJZ\"\n",
+            "metadata": {
+              "output": "\u001b[91m\u001b[1mError: \u001b[0mUnexpected error\n\nExpected a string starting with \"ses\", got \"5eRz5AJZ\"\n",
+              "exit": 1,
+              "truncated": false
+            },
+            "title": "opencode export 5eRz5AJZ",
+            "time": {
+              "start": 1794600798172,
+              "end": 1794600800424
+            }
+          },
+          "id": "prt_1d68b06eb001X1vqcyQ6k82XkP",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d68af96c0012M2PcNxzy3h8y9"
+        },
+        {
+          "reason": "tool-calls",
+          "snapshot": "1246fa182b83da4598ef40d2bb30657c74fd8213",
+          "type": "step-finish",
+          "tokens": {
+            "total": 7280,
+            "input": 745,
+            "output": 97,
+            "reasoning": 214,
+            "cache": {
+              "write": 0,
+              "read": 6224
+            }
+          },
+          "cost": 0.00029224,
+          "id": "prt_1d68b10c0001qXt2Mvy4VKY5PT",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d68af96c0012M2PcNxzy3h8y9"
+        }
+      ]
+    },
+    {
+      "info": {
+        "parentID": "msg_1d68aa462001Ymk6ypBMixO0dy",
+        "role": "assistant",
+        "mode": "build",
+        "agent": "build",
+        "path": {
+          "cwd": "/Users/raghvendratiwari/Downloads/lab1 2/lab1/task1_opencode/hello-agent",
+          "root": "/Users/raghvendratiwari"
+        },
+        "cost": 0.00012866,
+        "tokens": {
+          "total": 7200,
+          "input": 145,
+          "output": 53,
+          "reasoning": 36,
+          "cache": {
+            "write": 0,
+            "read": 6966
+          }
+        },
+        "modelID": "openai.gpt-6-luna",
+        "providerID": "upb",
+        "time": {
+          "created": 1794600800468,
+          "completed": 1794600807389
+        },
+        "finish": "tool-calls",
+        "id": "msg_1d68b10d4001cD3NCLOdUA8R5e",
+        "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ"
+      },
+      "parts": [
+        {
+          "snapshot": "1246fa182b83da4598ef40d2bb30657c74fd8213",
+          "type": "step-start",
+          "id": "prt_1d68b1825001kNy2Uv8wd0mneS",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d68b10d4001cD3NCLOdUA8R5e"
+        },
+        {
+          "type": "tool",
+          "tool": "bash",
+          "callID": "call_ivWmhpWMdea9hPiV3st9SzoL",
+          "state": {
+            "status": "completed",
+            "input": {
+              "command": "opencode session --help",
+              "workdir": "/Users/raghvendratiwari/Downloads/lab1 2/lab1/task1_opencode/hello-agent"
+            },
+            "output": "opencode session\n\nmanage sessions\n\nCommands:\n  opencode session list                list sessions\n  opencode session delete <sessionID>  delete a session\n\nOptions:\n  -h, --help        show help                                                              [boolean]\n  -v, --version     show version number                                                    [boolean]\n      --print-logs  print logs to stderr                                                   [boolean]\n      --log-level   log level                   [string] [choices: \"DEBUG\", \"INFO\", \"WARN\", \"ERROR\"]\n      --pure        run without external plugins                                           [boolean]",
+            "metadata": {
+              "output": "opencode session\n\nmanage sessions\n\nCommands:\n  opencode session list                list sessions\n  opencode session delete <sessionID>  delete a session\n\nOptions:\n  -h, --help        show help                                                              [boolean]\n  -v, --version     show version number                                                    [boolean]\n      --print-logs  print logs to stderr                                                   [boolean]\n      --log-level   log level                   [string] [choices: \"DEBUG\", \"INFO\", \"WARN\", \"ERROR\"]\n      --pure        run without external plugins                                           [boolean]",
+              "exit": 0,
+              "truncated": false
+            },
+            "title": "opencode session --help",
+            "time": {
+              "start": 1794600802563,
+              "end": 1794600807352
+            }
+          },
+          "id": "prt_1d68b18260016t34rfHv5e9JUX",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d68b10d4001cD3NCLOdUA8R5e"
+        },
+        {
+          "reason": "tool-calls",
+          "snapshot": "1246fa182b83da4598ef40d2bb30657c74fd8213",
+          "type": "step-finish",
+          "tokens": {
+            "total": 7200,
+            "input": 145,
+            "output": 53,
+            "reasoning": 36,
+            "cache": {
+              "write": 0,
+              "read": 6966
+            }
+          },
+          "cost": 0.00012866,
+          "id": "prt_1d68b2bca0017uKX0pz2Nh9EE7",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d68b10d4001cD3NCLOdUA8R5e"
+        }
+      ]
+    },
+    {
+      "info": {
+        "parentID": "msg_1d68aa462001Ymk6ypBMixO0dy",
+        "role": "assistant",
+        "mode": "build",
+        "agent": "build",
+        "path": {
+          "cwd": "/Users/raghvendratiwari/Downloads/lab1 2/lab1/task1_opencode/hello-agent",
+          "root": "/Users/raghvendratiwari"
+        },
+        "cost": 0.00011388,
+        "tokens": {
+          "total": 7336,
+          "input": 178,
+          "output": 50,
+          "reasoning": 0,
+          "cache": {
+            "write": 0,
+            "read": 7108
+          }
+        },
+        "modelID": "openai.gpt-6-luna",
+        "providerID": "upb",
+        "time": {
+          "created": 1794600807390,
+          "completed": 1794600813301
+        },
+        "finish": "tool-calls",
+        "id": "msg_1d68b2bde001diWEL99mFAKX14",
+        "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ"
+      },
+      "parts": [
+        {
+          "snapshot": "1246fa182b83da4598ef40d2bb30657c74fd8213",
+          "type": "step-start",
+          "id": "prt_1d68b2fed001Dm0v4Bl8IHfZ6j",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d68b2bde001diWEL99mFAKX14"
+        },
+        {
+          "type": "tool",
+          "tool": "bash",
+          "callID": "call_2nMmbS8ZKA54QwYhEB3dd87z",
+          "state": {
+            "status": "completed",
+            "input": {
+              "command": "opencode session list",
+              "workdir": "/Users/raghvendratiwari/Downloads/lab1 2/lab1/task1_opencode/hello-agent"
+            },
+            "output": "Session ID                      Title                                    Updated\n────────────────────────────────────────────────────────────────────────────────\nses_e297846f1ffe6UtaZh5eRz5AJZ  Create and run hello.py greeting script  9:13 PM\nses_e298ba332ffeqdcXS6jtnJKXPn  Creating and running hello.py            8:48 PM\nses_e298ed84affeKCTPj61UQrDYvb  New session - 2026-11-13T19:45:02.389Z   8:45 PM\nses_e29906b7affeph8IuT2rWHWDdR  New session - 2026-11-13T19:43:19.173Z   8:43 PM\n",
+            "metadata": {
+              "output": "Session ID                      Title                                    Updated\n────────────────────────────────────────────────────────────────────────────────\nses_e297846f1ffe6UtaZh5eRz5AJZ  Create and run hello.py greeting script  9:13 PM\nses_e298ba332ffeqdcXS6jtnJKXPn  Creating and running hello.py            8:48 PM\nses_e298ed84affeKCTPj61UQrDYvb  New session - 2026-11-13T19:45:02.389Z   8:45 PM\nses_e29906b7affeph8IuT2rWHWDdR  New session - 2026-11-13T19:43:19.173Z   8:43 PM\n",
+              "exit": 0,
+              "truncated": false
+            },
+            "title": "opencode session list",
+            "time": {
+              "start": 1794600808655,
+              "end": 1794600813257
+            }
+          },
+          "id": "prt_1d68b2ff00013Av0pU4JL52A9p",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d68b2bde001diWEL99mFAKX14"
+        },
+        {
+          "reason": "tool-calls",
+          "snapshot": "1246fa182b83da4598ef40d2bb30657c74fd8213",
+          "type": "step-finish",
+          "tokens": {
+            "total": 7336,
+            "input": 178,
+            "output": 50,
+            "reasoning": 0,
+            "cache": {
+              "write": 0,
+              "read": 7108
+            }
+          },
+          "cost": 0.00011388,
+          "id": "prt_1d68b42e0001ul0tyNLuSCPA0S",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d68b2bde001diWEL99mFAKX14"
+        }
+      ]
+    },
+    {
+      "info": {
+        "parentID": "msg_1d68aa462001Ymk6ypBMixO0dy",
+        "role": "assistant",
+        "mode": "build",
+        "agent": "build",
+        "path": {
+          "cwd": "/Users/raghvendratiwari/Downloads/lab1 2/lab1/task1_opencode/hello-agent",
+          "root": "/Users/raghvendratiwari"
+        },
+        "cost": 0,
+        "tokens": {
+          "input": 0,
+          "output": 0,
+          "reasoning": 0,
+          "cache": {
+            "read": 0,
+            "write": 0
+          }
+        },
+        "modelID": "openai.gpt-6-luna",
+        "providerID": "upb",
+        "time": {
+          "created": 1794600813302
+        },
+        "id": "msg_1d68b42f60014Hm3Ana57KIiSj",
+        "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ"
+      },
+      "parts": [
+        {
+          "snapshot": "1246fa182b83da4598ef40d2bb30657c74fd8213",
+          "type": "step-start",
+          "id": "prt_1d68b4815001LAzmIxZA4cIsP1",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d68b42f60014Hm3Ana57KIiSj"
+        },
+        {
+          "type": "tool",
+          "tool": "bash",
+          "callID": "call_drd3xc9pVLaZpx2cBz3oBXjx",
+          "state": {
+            "metadata": {
+              "output": "Exporting session: ses_e297846f1ffe6UtaZh5eRz5AJZ\n"
+            },
+            "status": "running",
+            "input": {
+              "command": "opencode export ses_e297846f1ffe6UtaZh5eRz5AJZ > session-log.json && python3 -c 'import json; d=json.load(open(\"session-log.json\")); print(type(d).__name__); print(list(d) if isinstance(d,dict) else len(d))'",
+              "workdir": "/Users/raghvendratiwari/Downloads/lab1 2/lab1/task1_opencode/hello-agent"
+            },
+            "time": {
+              "start": 1794600815363
+            }
+          },
+          "id": "prt_1d68b4817001IPhdXTs7U5IiFD",
+          "sessionID": "ses_e297846f1ffe6UtaZh5eRz5AJZ",
+          "messageID": "msg_1d68b42f60014Hm3Ana57KIiSj"
+        }
+      ]
+    }
+  ]
+}
