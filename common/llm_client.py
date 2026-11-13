@@ -193,12 +193,24 @@ class LLMClient:
         vectors: list[list[float]] = []
         cost = 0.0
         start = time.time()
-        for i in range(0, len(texts), batch_size):
-            batch = texts[i : i + batch_size]
+
+        def one_batch(batch: list[str]) -> list[list[float]]:
+            nonlocal cost
             response, meta = self._with_retries(lambda: self._create(self._client.embeddings, model=model, input=batch))
-            vectors.extend(item.embedding for item in response.data)
             self._count(meta)
             cost += meta["cost_usd"] or 0.0
+            # the gateway may return them out of order (fake clients in tests have no index: keep their order)
+            items = sorted(enumerate(response.data), key=lambda x: getattr(x[1], "index", x[0]))
+            if [getattr(d, "index", i) for i, d in items] == list(range(len(batch))):
+                return [d.embedding for _, d in items]
+            # seen on the UPB gateway: duplicate indices (63 of 64), so vectors would shift. Split and try again.
+            if len(batch) == 1:
+                raise RuntimeError("embedding response does not match the request")
+            half = len(batch) // 2
+            return one_batch(batch[:half]) + one_batch(batch[half:])
+
+        for i in range(0, len(texts), batch_size):
+            vectors.extend(one_batch(texts[i : i + batch_size]))
         self._log(
             {
                 "type": "embedding",

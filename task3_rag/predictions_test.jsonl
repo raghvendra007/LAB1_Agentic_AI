@@ -1,0 +1,100 @@
+{"id": "test001", "answer": "Also shows internal system objects (names starting with `__`).", "retrieved_doc_ids": ["d0188", "d0708", "d0660", "d0072", "d0665"]}
+{"id": "test002", "answer": "Reduce the incoming rate or increase `partitioner.buffer_bytes`. Also check whether downstream processing is stuck.", "retrieved_doc_ids": ["d0561", "d0687", "d0296", "d0865", "d0850"]}
+{"id": "test003", "answer": "Only considers objects created after the specified ISO 8601 timestamp.", "retrieved_doc_ids": ["d0708", "d0004", "d0718", "d0084", "d0885"]}
+{"id": "test004", "answer": "PQ-E3575 (COORDINATOR_BUFFER_EXHAUSTED)", "retrieved_doc_ids": ["d0899", "d0870", "d0826", "d0507", "d0192"]}
+{"id": "test005", "answer": "The default changed in PaderQueue 4.0; it was previously 1000.", "retrieved_doc_ids": ["d0315", "d0648", "d0882", "d0582", "d0913"]}
+{"id": "test006", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0791", "d0379", "d0077", "d0417", "d0641"]}
+{"id": "test007", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0366", "d0349", "d0905", "d0627", "d0659"]}
+{"id": "test008", "answer": "20", "retrieved_doc_ids": ["d0097", "d0025", "d0198", "d0555", "d0303"]}
+{"id": "test009", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0109", "d0477", "d0610", "d0272", "d0499"]}
+{"id": "test010", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0404", "d0118", "d0790", "d0214", "d0777"]}
+{"id": "test011", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0117", "d0093", "d0488", "d0359", "d0422"]}
+{"id": "test012", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0588", "d0499", "d0168", "d0007", "d0549"]}
+{"id": "test013", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0896", "d0776", "d0070", "d0040", "d0551"]}
+{"id": "test014", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0723", "d0790", "d0118", "d0777", "d0214"]}
+{"id": "test015", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0043", "d0641", "d0077", "d0379", "d0417"]}
+{"id": "test016", "answer": "COMPACTOR_COMPONENT_DISABLED", "retrieved_doc_ids": ["d0477", "d0109", "d0755", "d0610", "d0499"]}
+{"id": "test017", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0667", "d0406", "d0700", "d0204", "d0808"]}
+{"id": "test018", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0261", "d0790", "d0118", "d0214", "d0777"]}
+{"id": "test019", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0316", "d0371", "d0720", "d0726", "d0360"]}
+{"id": "test020", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0658", "d0302", "d0614", "d0839", "d0005"]}
+{"id": "test021", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0531", "d0663", "d0526", "d0300", "d0376"]}
+{"id": "test022", "answer": "256", "retrieved_doc_ids": ["d0931", "d0671", "d0343", "d0680", "d0585"]}
+{"id": "test023", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0842", "d0477", "d0650", "d0109", "d0506"]}
+{"id": "test024", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0549", "d0449", "d0552", "d0755", "d0467"]}
+{"id": "test025", "answer": "Reduce the incoming rate or increase `snapshotter.buffer_bytes`. Also check whether downstream processing is stuck.", "retrieved_doc_ids": ["d0658", "d0302", "d0563", "d0873", "d0005"]}
+{"id": "test026", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0156", "d0407", "d0583", "d0580", "d0498"]}
+{"id": "test027", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0650", "d0292", "d0808", "d0041", "d0563"]}
+{"id": "test028", "answer": "`partitioner.buffer_bytes`", "retrieved_doc_ids": ["d0551", "d0899", "d0826", "d0507", "d0925"]}
+{"id": "test029", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0655", "d0793", "d0225", "d0810", "d0382"]}
+{"id": "test030", "answer": "The default changed in PaderQueue 4.0; before that, it was 2000 ms.", "retrieved_doc_ids": ["d0530", "d0526", "d0663", "d0911", "d0081"]}
+{"id": "test031", "answer": "It changed in 3.0; the previous default was `300` seconds.", "retrieved_doc_ids": ["d0677", "d0132", "d0255", "d0171", "d0910"]}
+{"id": "test032", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0659", "d0283", "d0823", "d0272", "d0548"]}
+{"id": "test033", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0113", "d0262", "d0440", "d0129", "d0932"]}
+{"id": "test034", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0109", "d0610", "d0755", "d0272", "d0477"]}
+{"id": "test035", "answer": "Set `coordinator.compression` to the same value on all nodes, then restart them one after another.", "retrieved_doc_ids": ["d0270", "d0328", "d0459", "d0164", "d0815"]}
+{"id": "test036", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0385", "d0258", "d0513", "d0427", "d0631"]}
+{"id": "test037", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0199", "d0269", "d0705", "d0136", "d0798"]}
+{"id": "test038", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0109", "d0477", "d0842", "d0610", "d0650"]}
+{"id": "test039", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0507", "d0887", "d0870", "d0826", "d0899"]}
+{"id": "test040", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0507", "d0700", "d0735", "d0805", "d0749"]}
+{"id": "test041", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0370", "d0423", "d0473", "d0406", "d0667"]}
+{"id": "test042", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0896", "d0070", "d0040", "d0647", "d0822"]}
+{"id": "test043", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0244", "d0394", "d0630", "d0605", "d0356"]}
+{"id": "test044", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0498", "d0156", "d0881", "d0407", "d0381"]}
+{"id": "test045", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0569", "d0406", "d0805", "d0700", "d0507"]}
+{"id": "test046", "answer": "`lz4`", "retrieved_doc_ids": ["d0206", "d0707", "d0175", "d0351", "d0596"]}
+{"id": "test047", "answer": "It changed in PaderQueue 4.0, from 8 threads to 2.", "retrieved_doc_ids": ["d0240", "d0929", "d0601", "d0520", "d0604"]}
+{"id": "test048", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0750", "d0292", "d0283", "d0588", "d0659"]}
+{"id": "test049", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0272", "d0109", "d0755", "d0610", "d0477"]}
+{"id": "test050", "answer": "`ingress.log_level`", "retrieved_doc_ids": ["d0667", "d0074", "d0256", "d0642", "d0406"]}
+{"id": "test051", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0798", "d0633", "d0162", "d0012", "d0376"]}
+{"id": "test052", "answer": "Add worker threads or increase `acktracker.queue_capacity`.", "retrieved_doc_ids": ["d0366", "d0808", "d0349", "d0406", "d0905"]}
+{"id": "test053", "answer": "32", "retrieved_doc_ids": ["d0538", "d0781", "d0487", "d0912", "d0603"]}
+{"id": "test054", "answer": "100", "retrieved_doc_ids": ["d0315", "d0175", "d0648", "d0882", "d0913"]}
+{"id": "test055", "answer": "SPOOL_CODEC_MISMATCH", "retrieved_doc_ids": ["d0738", "d0842", "d0065", "d0351", "d0506"]}
+{"id": "test056", "answer": "90", "retrieved_doc_ids": ["d0347", "d0365", "d0016", "d0373", "d0670"]}
+{"id": "test057", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0109", "d0272", "d0477", "d0610", "d0842"]}
+{"id": "test058", "answer": "Skips the confirmation prompt.", "retrieved_doc_ids": ["d0885", "d0433", "d0014", "d0161", "d0514"]}
+{"id": "test059", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0175", "d0315", "d0474", "d0870", "d0507"]}
+{"id": "test060", "answer": "256", "retrieved_doc_ids": ["d0673", "d0764", "d0666", "d0035", "d0299"]}
+{"id": "test061", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0535", "d0790", "d0214", "d0118", "d0777"]}
+{"id": "test062", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0499", "d0094", "d0507", "d0755", "d0192"]}
+{"id": "test063", "answer": "`retention.threshold_percent`", "retrieved_doc_ids": ["d0642", "d0507", "d0870", "d0365", "d0347"]}
+{"id": "test064", "answer": "Also shows internal system objects (names starting with `__`).", "retrieved_doc_ids": ["d0708", "d0915", "d0106", "d0718", "d0004"]}
+{"id": "test065", "answer": "The default changed in 3.0; it was 90% before.", "retrieved_doc_ids": ["d0365", "d0670", "d0668", "d0373", "d0347"]}
+{"id": "test066", "answer": "It sets the maximum number of nodes processed at the same time.", "retrieved_doc_ids": ["d0106", "d0330", "d0717", "d0348", "d0812"]}
+{"id": "test067", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0825", "d0446", "d0608", "d0315", "d0733"]}
+{"id": "test068", "answer": "`warn`", "retrieved_doc_ids": ["d0469", "d0369", "d0341", "d0318", "d0907"]}
+{"id": "test069", "answer": "Specifies the number of days the result is kept before it is deleted automatically.", "retrieved_doc_ids": ["d0591", "d0885", "d0861", "d0352", "d0901"]}
+{"id": "test070", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0533", "d0118", "d0790", "d0777", "d0214"]}
+{"id": "test071", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0828", "d0121", "d0039", "d0083", "d0436"]}
+{"id": "test072", "answer": "The default changed in 3.0; the previous value is not specified in the documentation.", "retrieved_doc_ids": ["d0679", "d0593", "d0795", "d0822", "d0874"]}
+{"id": "test073", "answer": "`partitioner.max_retries`", "retrieved_doc_ids": ["d0806", "d0507", "d0376", "d0058", "d0596"]}
+{"id": "test074", "answer": "partitioner.compression", "retrieved_doc_ids": ["d0707", "d0206", "d0192", "d0870", "d0094"]}
+{"id": "test075", "answer": "Apply the fix recommended in the PQ-E4590 error catalogue; the workaround is not a permanent fix.", "retrieved_doc_ids": ["d0762", "d0158", "d0811", "d0215", "d0790"]}
+{"id": "test076", "answer": "lz4", "retrieved_doc_ids": ["d0564", "d0903", "d0609", "d0738", "d0406"]}
+{"id": "test077", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0307", "d0260", "d0045", "d0403", "d0805"]}
+{"id": "test078", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0642", "d0192", "d0507", "d0870", "d0094"]}
+{"id": "test079", "answer": "`warn`", "retrieved_doc_ids": ["d0835", "d0321", "d0789", "d0369", "d0779"]}
+{"id": "test080", "answer": "100", "retrieved_doc_ids": ["d0487", "d0291", "d0516", "d0566", "d0872"]}
+{"id": "test081", "answer": "It changed in PaderQueue 4.0; before that, the default was `warn`.", "retrieved_doc_ids": ["d0369", "d0318", "d0341", "d0469", "d0870"]}
+{"id": "test082", "answer": "The default changed in PaderQueue 4.0; before that, it was `256`.", "retrieved_doc_ids": ["d0050", "d0776", "d0603", "d0690", "d0604"]}
+{"id": "test083", "answer": "`retention.max_connections`", "retrieved_doc_ids": ["d0204", "d0571", "d0550", "d0107", "d0227"]}
+{"id": "test084", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0264", "d0920", "d0740", "d0549", "d0659"]}
+{"id": "test085", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0609", "d0874", "d0593", "d0822", "d0070"]}
+{"id": "test086", "answer": "Set `acktracker.enabled` to `true` and restart the node.", "retrieved_doc_ids": ["d0726", "d0720", "d0316", "d0371", "d0360"]}
+{"id": "test087", "answer": "It sets the maximum number of nodes processed at the same time.", "retrieved_doc_ids": ["d0508", "d0348", "d0134", "d0059", "d0717"]}
+{"id": "test088", "answer": "1024", "retrieved_doc_ids": ["d0088", "d0585", "d0470", "d0107", "d0671"]}
+{"id": "test089", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0156", "d0407", "d0583", "d0580", "d0286"]}
+{"id": "test090", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0853", "d0694", "d0395", "d0659", "d0495"]}
+{"id": "test091", "answer": "500", "retrieved_doc_ids": ["d0103", "d0211", "d0912", "d0487", "d0620"]}
+{"id": "test092", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0109", "d0477", "d0272", "d0842", "d0650"]}
+{"id": "test093", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0462", "d0765", "d0289", "d0456", "d0420"]}
+{"id": "test094", "answer": "`info`", "retrieved_doc_ids": ["d0800", "d0321", "d0789", "d0369", "d0494"]}
+{"id": "test095", "answer": "It changed in PaderQueue 4.0; the previous default was `info`.", "retrieved_doc_ids": ["d0907", "d0085", "d0375", "d0813", "d0461"]}
+{"id": "test096", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0023", "d0077", "d0379", "d0641", "d0417"]}
+{"id": "test097", "answer": "It changed in PaderQueue 3.0; before that, the default was `1`.", "retrieved_doc_ids": ["d0381", "d0509", "d0402", "d0334", "d0507"]}
+{"id": "test098", "answer": "`ingress.buffer_bytes`", "retrieved_doc_ids": ["d0387", "d0256", "d0406", "d0667", "d0551"]}
+{"id": "test099", "answer": "The documentation does not contain this information.", "retrieved_doc_ids": ["d0477", "d0109", "d0272", "d0610", "d0755"]}
+{"id": "test100", "answer": "`quota.interval_s`", "retrieved_doc_ids": ["d0507", "d0816", "d0300", "d0743", "d0132"]}

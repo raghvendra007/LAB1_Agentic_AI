@@ -1,242 +1,272 @@
-"""Autonomous coding agent loop for Task 2."""
+"""Task 2: a small coding agent that builds the team website. MAIN FILE.
+
+    context.build()  ->  LLM  ->  one JSON reply  ->  parse  ->  run the tool  ->  observation  ->  context
+    repeat until: finish accepted (stop signal) | step limit | 3 invalid replies in a row
+
+Files:  agent.py (this loop)  chat.py (chats: many turns, saved)  context.py (memory, summaries, token counts)
+        tools/*.py (one per tool)  rag.py
+
+Run from the repository root:
+    uv run python task2_own_agent/agent.py --content task1_opencode/content --out task2_own_agent/site/index.html
+"""
+
 from __future__ import annotations
 
 import argparse
+import ast
 import json
 import re
 import sys
-from datetime import datetime
+from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
 
-# Add repository root to path for common imports
-REPO_ROOT = Path(__file__).resolve().parent.parent
-if str(REPO_ROOT) not in sys.path:
-    sys.path.insert(0, str(REPO_ROOT))
+HERE = Path(__file__).resolve().parent
+sys.path[:0] = [str(HERE), str(HERE.parent)]
 
-from common.llm_client import LLMClient
-from common.site_checker import check_site
-from common.embed_images import embed_images
-from task2_own_agent.rag import StyleGuideRAG
+from common.llm_client import LLMClient  # noqa: E402
+from common.site_checker import member_names_from_content  # noqa: E402
+import chat  # noqa: E402
+from context import Context  # noqa: E402
+from rag import Embedder, StyleGuideRAG  # noqa: E402
+from tools import TOOLS  # noqa: E402
 
-SYSTEM_PROMPT = """You are an autonomous web-development agent. Your objective is to build a standalone, single-file HTML website introducing a software engineering team.
+SYSTEM_PROMPT = """You are a coding agent. You build a single-file team website (index.html) step by step.
 
-You must interact strictly through a JSON action protocol. In every turn, respond with exactly one JSON object:
-{"thought": "concise explanation of your immediate next step", "action": "", "args": {}}
+Reply with exactly ONE JSON object per message:
+{{"thought": "one short sentence", "action": "<tool>", "args": {{...}}}}
 
-Available actions:
-1. search_style_guide: {"query": ""}
-   Retrieve guidelines, requirements, and color/formatting rules from the style guide.
-2. read_profiles: {}
-   Read member profile contents and discover available image files.
-3. write_site: {}
-   Provide the full HTML code in a ```html code block immediately following your JSON object.
-   - Do NOT embed raw base64 data.
-   - Use placeholders for images: <img src="{{image:filename.png}}" alt="...">.
-   - Embed all CSS and JS directly inside the single HTML file.
-4. finish: {"summary": "<brief summary of what was built>"}
-   Only call this when the site has been written and all checker requirements have passed.
+Tools:
+{tools}
 
 Rules:
-- Never guess style guide specifications. Use search_style_guide to look up navigation, typography, breakpoints, footer, and day/night requirements.
-- Notice: Some documents are deprecated versions; always follow the newest specifications.
+- The page must follow the team's web style guide. You do not know it: search it (one topic per query) before
+  you write, and save each rule you need with remember.
+- Some style guide documents are DEPRECATED. Always follow the ACTIVE version.
+- Never write base64 image data. Use placeholders: <img src="{{{{image:anna.jpg}}}}" alt="...">
+- One standalone file: HTML + CSS + JavaScript only, nothing loaded from the internet.
+- Do not over-research: after about 6 searches, write a first page. The checker report tells you what is
+  still wrong; then search only those topics.
+- write_site: send the JSON and the page (```html block) in one message, or the page alone in the next one.
+- When a check fails: search that topic, then write the whole page again.
+- If the user only asks a question or chats, answer with reply (no page needed).
+  If the user asks for a change to the page, write it, get all checks passing, then finish.
 """
 
+FIRST_PROMPT = """Build the website of our team. It introduces the team and every member (with picture), is
+responsive (phone and desktop), has a day/night mode toggle, a section with the team's shared view on AI and the
+future of software engineering, and is funny and creative."""
 
-def parse_action_response(text: str) -> tuple[dict[str, Any], str | None]:
-    """Extracts the JSON action and any trailing ```html ... ``` block."""
-    text = text.strip()
-    html_block = None
-
-    # Check for trailing ```html ... ``` block
-    html_match = re.search(r"```html\s*([\s\S]*?)\s*```", text)
-    if html_match:
-        html_block = html_match.group(1).strip()
-        # Remove the code block from the string to safely parse the remaining JSON
-        text = text[:html_match.start()] + text[html_match.end():]
-        text = text.strip()
-
-    # Locate first '{' and matching outermost '}'
-    first_brace = text.find("{")
-    last_brace = text.rfind("}")
-    if first_brace == -1 or last_brace == -1:
-        raise ValueError("No valid JSON object found in response.")
-
-    json_str = text[first_brace : last_brace + 1]
-    parsed = json.loads(json_str)
-
-    if not isinstance(parsed, dict) or "action" not in parsed:
-        raise ValueError("Response must be a JSON object containing an 'action' key.")
-
-    return parsed, html_block
+MAX_TOKENS = 24_000  # per reply: a page + reasoning fit; stops a model that repeats itself for minutes
+SEARCH_NUDGE = 6  # searches in a row -> remind the model to write (free models can search forever)
+KEEP_INVALID = 2_000  # characters of a broken reply kept in the context (the full reply stays in the log)
+PINS = {"write_site": ("page", None), "read_profiles": (None, "profiles")}  # always kept visible (context.py)
+PAGE = re.compile(r"<!DOCTYPE html.*</html>", re.S | re.I)
+HTML_BLOCK = re.compile(r"```(?:html)?\s*\n(\s*<.*?)(?:```|\Z)", re.S | re.I)  # ```html or a plain ``` block
 
 
-class OwnCodingAgent:
-    def __init__(
-        self,
-        content_dir: Path,
-        out_file: Path,
-        style_guide_dir: Path,
-        log_path: Path,
-        max_steps: int = 25,
-    ) -> None:
-        self.content_dir = Path(content_dir)
-        self.out_file = Path(out_file)
-        self.out_file.parent.mkdir(parents=True, exist_ok=True)
-        self.images_dir = self.content_dir / "images"
+@dataclass
+class State:
+    """Everything the tools may read or change."""
+    ctx: Context
+    rag: StyleGuideRAG
+    content: Path
+    out: Path
+    members: list[str]
+    k: int = 5
+    last_report: object = None  # checker report of the last write_site
+    version: int = 0  # number of write_site calls
+    done: bool = False  # set by finish when accepted
 
-        self.max_steps = max_steps
-        self.llm = LLMClient(log_path=log_path)
-        print("Indexing style guide documents...")
-        self.rag = StyleGuideRAG(style_guide_dir, llm=self.llm)
-        print(f"Indexed {len(self.rag.chunks)} chunks from style guide.")
 
-        self.messages: list[dict[str, str]] = [
-            {"role": "system", "content": SYSTEM_PROMPT},
-            {
-                "role": "user",
-                "content": (
-                    "Build the complete standalone team website. "
-                    "Start by reading profiles and searching the style guide for layout, navigation, and color rules."
-                ),
-            },
-        ]
-        self.last_checker_passed = False
-        self.last_checker_report = "Site has not been written or checked yet."
+CALL = re.compile(r"\b(" + "|".join(TOOLS) + r")\((.*)\)", re.S)  # name(key='value') style that some models use
 
-    def execute_step(self, step_idx: int) -> tuple[bool, str]:
-        """Executes one step in the loop. Returns (is_finished, observation)."""
-        print(f"\n--- [Step {step_idx}/{self.max_steps}] Calling Model ---")
-        response_text = self.llm.chat(self.messages, max_tokens=16000)
-        self.messages.append({"role": "assistant", "content": response_text})
 
-        # Parse action
-        try:
-            action_data, html_block = parse_action_response(response_text)
-            action = action_data.get("action")
-            args = action_data.get("args", {})
-            thought = action_data.get("thought", "")
-            print(f"Thought: {thought}")
-            print(f"Action:  {action}")
-        except Exception as e:
-            obs = f"Error: Failed to parse action JSON: {e}. Respond strictly with {{\"thought\": \"...\", \"action\": \"...\", \"args\": {{}}}}"
-            print(f"Observation: {obs}")
-            self.messages.append({"role": "user", "content": f"Observation: {obs}"})
-            self.llm.log_event({"step": step_idx, "error": str(e), "observation": obs})
-            return False, obs
+ALIASES = ("args", "arguments", "input", "parameters")  # {"name": tool, "input": {...}} styles of other agents
 
-        # Dispatch action
-        if action == "search_style_guide":
-            query = args.get("query", "")
-            if not query:
-                obs = "Error: 'search_style_guide' requires a non-empty 'query' argument."
-            else:
-                chunks = self.rag.search(query, k=4)
-                obs_lines = [f"Found {len(chunks)} style guide excerpts:"]
-                for c in chunks:
-                    obs_lines.append(f"\n--- Document {c.doc_id}: {c.title} ---\n{c.text}")
-                obs = "\n".join(obs_lines)
 
-        elif action == "read_profiles":
-            md_files = [f for f in sorted(self.content_dir.glob("*.md")) if not f.name.startswith("_")]
-            profiles_text = []
-            for p in md_files:
-                profiles_text.append(f"### {p.name}\n{p.read_text(encoding='utf-8')}")
+def _normalize(obj: object) -> object:
+    """{"name": "read_profiles", "input": {}} (MCP / OpenAI style) -> {"action": "read_profiles", "args": {}}."""
+    if isinstance(obj, dict) and "action" not in obj and (name := obj.get("name") or obj.get("tool")) in TOOLS:
+        args = next((obj[k] for k in ALIASES if k in obj), {})
+        return {"thought": obj.get("thought", ""), "action": name, "args": args}
+    return obj
 
-            img_files = [f.name for f in sorted(self.images_dir.glob("*"))] if self.images_dir.exists() else []
-            obs = (
-                f"Available images in content/images/: {img_files}\n\n"
-                f"Team Member Profiles:\n" + "\n\n".join(profiles_text)
-            )
 
-        elif action == "write_site":
-            html_content = html_block or args.get("html", "")
-            if not html_content:
-                obs = "Error: No HTML provided. Supply it in args['html'] or in a ```html code block after the JSON."
-            else:
-                try:
-                    # Write initial HTML
-                    self.out_file.write_text(html_content, encoding="utf-8")
-                    # Embed images
-                    if self.images_dir.exists():
-                        embed_images(self.out_file, self.images_dir)
-                        
-                    # changed=>   (self.out_file, self.images_dir, self.out_file)
+def _find_object(text: str) -> tuple[object, int, str]:
+    """First JSON object with an "action" (else the first valid one). Closes up to 3 missing } at the end:
+    free models often stop one brace short. Returns (object or None, end position, last parse error)."""
+    first, error = None, "no complete object"
+    for start in (i for i, ch in enumerate(text) if ch == "{"):
+        for tail in ("", "}", "}}", "}}}"):
+            try:
+                obj, end = json.JSONDecoder().raw_decode(text[start:] + tail)
+            except json.JSONDecodeError as exc:
+                error = exc.msg
+                continue
+            end, obj = start + min(end, len(text) - start), _normalize(obj)
+            if isinstance(obj, dict) and "action" in obj:
+                return obj, end, error
+            first = first or (obj, end)
+            break
+    return (*first, error) if first else (None, 0, error)
 
-                    # Run check_site in full mode
-                    report = check_site(
-                        self.out_file,
-                        content_dir=self.content_dir,
-                        mode="full",
-                    )
-                    self.last_checker_passed = report.passed
-                    self.last_checker_report = report.format()
-                    obs = f"Checker results (passed={report.passed}):\n{report.format()}"
-                except Exception as e:
-                    obs = f"Error during write_site or verification: {e}"
-                    self.last_checker_passed = False
 
-        elif action == "finish":
-            if not self.last_checker_passed:
-                obs = f"Action rejected: check_site has not passed yet. Report:\n{self.last_checker_report}"
-                print("Finish rejected: site check has failing rules.")
-            else:
-                obs = f"Finish accepted: all checker constraints passed. Summary: {args.get('summary', 'Done')}"
-                print(obs)
-                self.messages.append({"role": "user", "content": f"Observation: {obs}"})
-                self.llm.log_event({"step": step_idx, "action": action, "observation": obs})
-                return True, obs
+def _call_format(text: str) -> dict | None:
+    """search_style_guide(query='night mode') -> {"action": ..., "args": {...}} (only literal values, via ast)."""
+    if not (m := CALL.search(text)):
+        return None
+    try:
+        call = ast.parse(f"{m.group(1)}({m.group(2)})", mode="eval").body
+        return {"action": m.group(1), "args": {k.arg: ast.literal_eval(k.value) for k in call.keywords}}
+    except (SyntaxError, ValueError, AttributeError):
+        return None
 
+
+class NeedPage(ValueError):
+    """write_site without a page: not an error, the page may come in the next message."""
+
+
+def page_in(text: str) -> str | None:
+    """The page in a reply: a ```html (or plain ```) code block, or a bare <!DOCTYPE html> ... </html>."""
+    m = HTML_BLOCK.search(text) or PAGE.search(text)
+    return (m.group(1) if m.re is HTML_BLOCK else m.group(0)) if m else None
+
+
+def parse_reply(text: str) -> tuple[str, dict, str, str]:
+    """Reply text -> (action, args, thought, kept). Raises ValueError with a message the model can act on.
+    kept = the part of the reply worth keeping in the context (the JSON, plus the page for write_site);
+    junk after it (e.g. the same action repeated 500 times) is dropped.
+    Forgiving on purpose: a missing closing brace, a name(key='value') call or {"name", "input"} still work."""
+    if not text.strip():
+        raise ValueError("Your reply was empty (maybe you thought for too long). Reply now with one short JSON "
+                         'object: {"thought": ..., "action": ..., "args": {...}}')
+    obj, end, error = _find_object(text) if "{" in text else (None, 0, "")
+    if not (isinstance(obj, dict) and "action" in obj) and (call := _call_format(text)):
+        obj, end = call, len(text)
+    if not (isinstance(obj, dict) and "action" in obj) and "write_site" in text and (page := PAGE.search(text)):  # page in broken JSON quotes
+        html = page.group(0)
+        if "\n" not in html:  # it was a JSON string: undo the escapes
+            html = html.replace("\\n", "\n").replace('\\"', '"').replace("\\\\", "\\")
+        obj, end = {"action": "write_site", "args": {"html": html}}, page.end()
+    if obj is None:
+        if "{" not in text:
+            raise ValueError('No JSON found. Reply with one JSON object: {"thought": ..., "action": ..., "args": {...}}')
+        raise ValueError(f"Invalid JSON ({error}). Send exactly one valid JSON object.")
+    if isinstance(obj, dict) and "action" not in obj and '"action"' in text:
+        raise ValueError("Your JSON is not valid (check quotes and that every { has its }). Send it again.")
+    if not isinstance(obj, dict) or not isinstance(obj.get("action"), str) or obj["action"] not in TOOLS:
+        raise ValueError(f"Unknown or missing action. Allowed: {', '.join(TOOLS)}.")
+    action, args = obj["action"], obj.get("args", {})
+    if not isinstance(args, dict):
+        raise ValueError('"args" must be a JSON object.')
+    kept = text[:end]
+    if action == "write_site" and "html" not in args:
+        if m := HTML_BLOCK.search(text, end) or PAGE.search(text, end):  # code block, or a bare page, after the JSON
+            args["html"] = m.group(1) if m.re is HTML_BLOCK else m.group(0)
+            kept, end = text[:m.end()], m.end()
         else:
-            obs = f"Error: Unknown action '{action}'. Valid actions: search_style_guide, read_profiles, write_site, finish."
+            raise NeedPage("No page yet. Now reply with ONLY the complete page in a ```html ... ``` code block.")
+    if (more := text[end:].count('"action"')) > 0:
+        kept += f"\n[{more} more action(s) in this reply were ignored: one action per message]"
 
-        print(f"Observation:\n{obs[:300]}..." if len(obs) > 300 else f"Observation:\n{obs}")
-        self.messages.append({"role": "user", "content": f"Observation: {obs}"})
-        self.llm.log_event({"step": step_idx, "action": action, "args": args, "observation": obs})
-        return False, obs
-
-    def run(self) -> None:
-        step = 1
-        while step <= self.max_steps:
-            finished, _ = self.execute_step(step)
-            step += 1
-
-            if finished:
-                # Terminal Human in the loop feedback
-                user_feedback = input("\n[Agent finished] Enter feedback to continue, or press Enter to terminate: ").strip()
-                if not user_feedback:
-                    print("Run completed successfully.")
-                    break
-                print(f"Applying user feedback: {user_feedback}")
-                self.messages.append({"role": "user", "content": f"User Feedback: {user_feedback}"})
-                self.llm.log_event({"step": step, "type": "human_feedback", "feedback": user_feedback})
-                self.last_checker_passed = False
-
-        if step > self.max_steps:
-            print(f"\nStopped: Maximum step limit ({self.max_steps}) reached.")
+    expected = TOOLS[action].ARGS
+    if missing := [a for a in expected if not isinstance(args.get(a), expected[a])]:
+        raise ValueError(f"{action}: missing or wrong args {missing}. Usage: {TOOLS[action].DESCRIPTION}")
+    if extra := set(args) - set(expected):
+        raise ValueError(f"{action}: unexpected args {sorted(extra)}. Usage: {TOOLS[action].DESCRIPTION}")
+    return action, args, str(obj.get("thought", "")), kept
 
 
-def main():
-    parser = argparse.ArgumentParser(description="Run the custom coding agent for Task 2.")
-    parser.add_argument("--content", default="task1_opencode/content", help="Path to profile markdown directory")
-    parser.add_argument("--out", default="task2_own_agent/site/index.html", help="Path to output index.html")
-    parser.add_argument("--style-guide", default="task2_own_agent/style_guide", help="Path to style guide folder")
-    parser.add_argument("--max-steps", type=int, default=25, help="Maximum agent steps")
-    args = parser.parse_args()
+def run_turn(llm: LLMClient, state: State, max_steps: int, step: int) -> tuple[bool, int]:
+    """Agent loop for one user prompt. Returns (finished, last step number)."""
+    invalid, previous, searches, awaiting = 0, None, 0, False
+    for step in range(step + 1, step + max_steps + 1):
+        messages, tokens = state.ctx.build()
+        print(f"[step {step:2}] tokens: " + " · ".join(f"{k} {v}" for k, v in tokens.items()))
+        try:
+            reply = llm.chat(messages, max_tokens=MAX_TOKENS)
+        except Exception as exc:  # gateway down, budget used up, ... (LLMClient already retried)
+            print(f"Stopped: model call failed: {type(exc).__name__}: {exc}")
+            return False, step
+        try:
+            page, awaiting = (page_in(reply) if awaiting else None), False
+            if page:  # the page that write_site announced in the previous message
+                action, args, thought, kept = "write_site", {"html": page}, "the page", reply
+            else:
+                action, args, thought, kept = parse_reply(reply)
+            observation, obs_short = TOOLS[action].run(args, state)
+            searches = searches + 1 if action == "search_style_guide" else 0
+            if searches >= SEARCH_NUDGE:
+                observation += (f"\nNote: {searches} searches in a row. Write the page now with write_site; "
+                                "the checker will tell you what is still missing.")
+            if (action, args) == previous:
+                observation += "\nNote: you repeated your previous action exactly. Do something different."
+            previous, invalid = (action, args), 0
+            query = f' "{args["query"]}"' if "query" in args else ""
+            reply_short = f"step {step}: {action}{query} ({thought[:80]})"
+        except NeedPage as exc:  # models told "one JSON per message" often stop after the JSON: ask for the page
+            action, observation, obs_short, kept, awaiting = "write_site", str(exc), "waiting for the page", reply, True
+            reply_short = f"step {step}: write_site (page follows)"
+        except Exception as exc:  # bad reply (ValueError) or a tool error: never crash, tell the model
+            msg = str(exc) if isinstance(exc, ValueError) else f"{type(exc).__name__}: {exc}"
+            action, observation, obs_short = "invalid", f"Error: {msg}", f"error: {msg[:60]}"
+            kept = reply if len(reply) <= KEEP_INVALID else reply[:KEEP_INVALID] + f"\n[... cut, {len(reply)} chars]"
+            reply_short, invalid = f"step {step}: invalid reply", invalid + 1
+        print(f"          {action}: {obs_short}")
+        if "more action(s)" in kept:
+            observation += "\nNote: you sent several actions; only the first one was run. Send one per message."
+        pins = (None, None) if awaiting else PINS.get(action, (None, None))  # "page follows" is not the page
+        state.ctx.add_step(kept, reply_short, observation, obs_short, *pins)
+        llm.log_event({"step": step, "action": action, "tokens": tokens, "reply": reply, "observation": observation,
+                       "short": obs_short, "facts": list(state.ctx.facts)})
+        if state.done:
+            return True, step
+        if invalid >= 3:
+            print("Stopped: 3 invalid replies in a row.")
+            return False, step
+    print(f"Stopped: step limit of {max_steps} reached.")
+    return False, step
 
-    stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    log_dir = REPO_ROOT / "task2_own_agent" / "logs"
-    log_dir.mkdir(parents=True, exist_ok=True)
-    log_path = log_dir / f"run_{stamp}.jsonl"
 
-    agent = OwnCodingAgent(
-        content_dir=REPO_ROOT / args.content,
-        out_file=REPO_ROOT / args.out,
-        style_guide_dir=REPO_ROOT / args.style_guide,
-        log_path=log_path,
-        max_steps=args.max_steps,
-    )
-    agent.run()
+def make_state(llm, content: Path, out: Path, k=5, local_embeddings=False, full_history=False,
+               cache_dir: Path | None = None) -> State:
+    """Wire everything together: system prompt (with the tool list), context, RAG, state."""
+    tools = "\n".join(f"- {name}  {t.DESCRIPTION}" for name, t in TOOLS.items())
+    ctx = Context(llm, SYSTEM_PROMPT.format(tools=tools), full_history=full_history)
+    cache = {"cache_dir": cache_dir} if cache_dir else {}  # e.g. a writable folder inside a sandbox
+    rag = StyleGuideRAG(Embedder(llm, local=local_embeddings, **cache))
+    return State(ctx, rag, content, out, member_names_from_content(content), k=k)
+
+
+def next_log_path() -> Path:
+    numbers = [int(m.group(1)) for p in (HERE / "logs").glob("run_*.jsonl") if (m := re.match(r"run_(\d+)$", p.stem))]
+    return HERE / "logs" / f"run_{max(numbers, default=0) + 1:02d}.jsonl"
+
+
+def main() -> None:
+    p = argparse.ArgumentParser(description="Small coding agent for the team website (Task 2).")
+    p.add_argument("--content", type=Path, default=Path("task1_opencode/content"))
+    p.add_argument("--out", type=Path, default=HERE / "site" / "index.html")
+    p.add_argument("--model", help="chat model (default $LAB_CHAT_MODEL)")
+    p.add_argument("--max-steps", type=int, default=25, help="per user prompt")
+    p.add_argument("-k", type=int, default=5, help="chunks per search")
+    p.add_argument("--local-embeddings", action="store_true", help="embed locally instead of via the gateway")
+    p.add_argument("--full-history", action="store_true", help="no summaries: send every message as-is")
+    p.add_argument("--log", type=Path, help="log file (default logs/run_XX.jsonl)")
+    p.add_argument("--chat", help="chat name: resume it if it exists (default: a new chat). See chat.py")
+    a = p.parse_args()
+
+    try:
+        llm = LLMClient(model=a.model, log_path=a.log or next_log_path())
+    except RuntimeError as exc:
+        sys.exit(f"{exc}\nRun `python setup_api.py` once to create .env.")
+    state = make_state(llm, a.content, a.out, a.k, a.local_embeddings, a.full_history)
+    if not state.members:
+        sys.exit(f"No profiles in {a.content} (need <firstname>.md files + images/). Nothing to build.")
+    print(f"Log: {llm.log_path} | members: {state.members}")
+
+    name = a.chat or chat.new_name()
+    chat.talk(llm, state, name, FIRST_PROMPT, run_turn, a.max_steps)
 
 
 if __name__ == "__main__":

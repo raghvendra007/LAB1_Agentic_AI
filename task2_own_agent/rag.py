@@ -1,101 +1,146 @@
-"""RAG component for Task 2: indexes style guide docs and performs cosine similarity search."""
+"""RAG over the style guide: chunk, embed, cosine search.
+
+Chunking: each document is split at its `## ` headings, and long sections at blank lines,
+so a chunk stays below MAX_CHUNK_TOKENS. Every chunk starts with a header line
+"[SG-13] Night mode palette (version 2) | Status: ACTIVE (version 2)", so the model always sees
+the source id and whether the rule is deprecated, even when it only gets one section.
+
+Embeddings: see embeddings.py (API model by default, local MiniLM with --local, cached in .cache/).
+
+Quick check:  python task2_own_agent/rag.py "night mode colors" [--local]
+"""
+
 from __future__ import annotations
 
 import re
+import sys
 from dataclasses import dataclass
 from pathlib import Path
+
 import numpy as np
 
-from common.llm_client import LLMClient, count_tokens
+ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT))
+from common.llm_client import count_tokens  # noqa: E402
+from embeddings import CACHE_DIR, LOCAL_MODEL, Embedder, normalize as _normalize  # noqa: E402,F401  (wrapper: embeddings.py)
+
+GUIDE_DIR = Path(__file__).resolve().parent / "style_guide"
+MAX_CHUNK_TOKENS = 250
 
 
 @dataclass
 class Chunk:
-    doc_id: str
-    title: str
-    text: str
-    tokens: int
+    doc_id: str  # e.g. "SG-13"
+    text: str  # header line + section text
+    score: float = 0.0
+
+
+def load_chunks(guide_dir: Path = GUIDE_DIR) -> list[Chunk]:
+    chunks = []
+    for path in sorted(guide_dir.glob("*.md")):
+        text = path.read_text(encoding="utf-8")
+        doc_id = path.name.split("_")[0]
+        title = text.splitlines()[0].lstrip("# ").split(":", 1)[-1].strip()
+        status = re.search(r"^Status:\s*(.+)$", text, re.M)
+        header = f"[{doc_id}] {title}" + (f" | Status: {status.group(1).strip()}" if status else "")
+        body = text.split("\n", 1)[1] if "\n" in text else ""
+        for section in re.split(r"\n(?=## )", body):
+            for piece in _split_long(section.strip()):
+                if piece:
+                    chunks.append(Chunk(doc_id, f"{header}\n{piece}"))
+    return chunks
+
+
+def _split_long(text: str) -> list[str]:
+    """Merge paragraphs into pieces of at most MAX_CHUNK_TOKENS (a single huge paragraph stays whole)."""
+    pieces, current = [], ""
+    for para in text.split("\n\n"):
+        candidate = f"{current}\n\n{para}" if current else para
+        if current and count_tokens(candidate) > MAX_CHUNK_TOKENS:
+            pieces.append(current)
+            current = para
+        else:
+            current = candidate
+    return pieces + [current]
 
 
 class StyleGuideRAG:
-    def __init__(self, style_guide_dir: str | Path, llm: LLMClient | None = None) -> None:
-        self.style_guide_dir = Path(style_guide_dir)
-        self.llm = llm or LLMClient()
-        self.chunks: list[Chunk] = []
-        self.vectors: np.ndarray | None = None
-        self._build_index()
+    def __init__(self, embedder: Embedder, guide_dir: Path = GUIDE_DIR):
+        self.embed = embedder
+        self.chunks = load_chunks(guide_dir)
+        self.matrix = _normalize(embedder.cached([c.text for c in self.chunks]))
 
-    def _extract_doc_id(self, path: Path) -> str:
-        # Extracts 'SG-XX' from filenames like 'SG-35_page-structure.md'
-        match = re.match(r"(SG-\d+)", path.name)
-        return match.group(1) if match else path.stem
+    def search(self, query: str, k: int = 5) -> list[Chunk]:
+        q = _normalize(self.embed([query])[0])
+        scores = self.matrix @ q
+        top = np.argsort(-scores)[:k]
+        return [Chunk(self.chunks[i].doc_id, self.chunks[i].text, float(scores[i])) for i in top]
 
-    def _build_index(self) -> None:
-        md_files = sorted(self.style_guide_dir.glob("*.md"))
-        if not md_files:
-            raise FileNotFoundError(f"No markdown documents found in {self.style_guide_dir}")
 
-        for file_path in md_files:
-            doc_id = self._extract_doc_id(file_path)
-            content = file_path.read_text(encoding="utf-8").strip()
-            if not content:
-                continue
+def format_observation(chunks: list[Chunk], max_tokens: int = 1000) -> str:
+    """Join chunks best-first; stop before the style guide text exceeds max_tokens."""
+    parts, used = [], 0
+    for c in chunks:
+        n = count_tokens(c.text)
+        if used + n > max_tokens:
+            break
+        parts.append(c.text)
+        used += n
+    if not parts:
+        return "No style guide text found for this query."
+    return "\n\n---\n\n".join(parts)
 
-            # Chunk by primary markdown sections (# or ##), fallback to full file if small
-            sections = re.split(r"\n(?=#{1,2}\s+)", content)
-            for sec in sections:
-                sec_text = sec.strip()
-                if not sec_text:
-                    continue
-                first_line = sec_text.splitlines()[0].strip("# ").strip()
-                tokens = count_tokens(sec_text)
-                self.chunks.append(
-                    Chunk(
-                        doc_id=doc_id,
-                        title=first_line,
-                        text=sec_text,
-                        tokens=tokens,
-                    )
-                )
 
-        texts = [f"Document {c.doc_id}: {c.title}\n{c.text}" for c in self.chunks]
-        # Embed all chunks using the UPB embedding model
-        self.vectors = self.llm.embed(texts)
-        # Normalize vectors for cosine similarity computation
-        norms = np.linalg.norm(self.vectors, axis=1, keepdims=True)
-        norms[norms == 0] = 1e-10
-        self.vectors = self.vectors / norms
+# query -> (expected ACTIVE document, its DEPRECATED older version or None)
+CHECKS = [
+    ("night mode colors", "SG-13", "SG-12"),
+    ("day mode background and text color", "SG-11", "SG-10"),
+    ("what must the footer say", "SG-40", "SG-39"),
+    ("mobile breakpoint width", "SG-50", "SG-49"),
+    ("remember the chosen theme after reload", "SG-21", "SG-19"),
+    ("theme toggle button", "SG-22", None),
+    ("page title format", "SG-02", None),
+    ("member card markup", "SG-30", None),
+    ("which font family", "SG-51", None),
+    ("hot take badge", "SG-31", None),
+]
 
-    def search(self, query: str, k: int = 5, max_token_budget: int = 1000) -> list[Chunk]:
-        """Returns top-k matching chunks staying within the 1,000-token budget."""
-        if not self.chunks or self.vectors is None:
-            return []
 
-        # Embed query
-        q_vec = self.llm.embed([query])
-        q_norm = np.linalg.norm(q_vec)
-        if q_norm > 0:
-            q_vec = q_vec / q_norm
+def check(rag: "StyleGuideRAG", k: int) -> None:
+    """Retrieval check: rank of the expected document (doc rank, first chunk counts) for each query."""
+    def rank(ids, doc):
+        return ids.index(doc) + 1 if doc in ids else None
+    hits = 0
+    print(f"{'query':40} expected  rank  deprecated  rank")
+    for query, active, old in CHECKS:
+        ids = list(dict.fromkeys(c.doc_id for c in rag.search(query, len(rag.chunks))))
+        r, ro = rank(ids, active), rank(ids, old) if old else None
+        hits += r <= k
+        flag = "  <- deprecated ranks higher" if ro and ro < r else ""
+        print(f"{query:40} {active:8} {r:>4}  {old or '-':10} {ro or '-':>4}{flag}")
+    print(f"expected document in top {k}: {hits}/{len(CHECKS)} (chunk size {MAX_CHUNK_TOKENS}, {len(rag.chunks)} chunks)")
 
-        # Cosine similarity via dot product against normalized vectors
-        scores = np.dot(self.vectors, q_vec.T).squeeze(-1)
-        ranked_indices = np.argsort(scores)[::-1]
 
-        selected_chunks: list[Chunk] = []
-        accumulated_tokens = 0
+if __name__ == "__main__":
+    import argparse
 
-        for idx in ranked_indices:
-            chunk = self.chunks[idx]
-            # Enforce the strict 1,000-token per observation budget rule
-            if accumulated_tokens + chunk.tokens > max_token_budget:
-                if not selected_chunks:
-                    # Guarantee at least one chunk even if it slightly approaches budget
-                    selected_chunks.append(chunk)
-                break
+    p = argparse.ArgumentParser()
+    p.add_argument("query", nargs="?", help="a search query (or use --check)")
+    p.add_argument("-k", type=int, default=5)
+    p.add_argument("--check", action="store_true", help="retrieval check table (CHECKS)")
+    p.add_argument("--chunk", type=int, default=MAX_CHUNK_TOKENS, help="max tokens per chunk")
+    p.add_argument("--local", action="store_true")
+    a = p.parse_args()
+    MAX_CHUNK_TOKENS = a.chunk
+    llm = None
+    if not a.local:
+        from common.llm_client import LLMClient
 
-            selected_chunks.append(chunk)
-            accumulated_tokens += chunk.tokens
-            if len(selected_chunks) >= k:
-                break
-
-        return selected_chunks
+        llm = LLMClient(log_path=CACHE_DIR / "rag_cli.jsonl")
+    rag = StyleGuideRAG(Embedder(llm, local=a.local))
+    if a.check:
+        check(rag, a.k)
+    else:
+        print(f"{len(rag.chunks)} chunks")
+        for c in rag.search(a.query, a.k):
+            print(f"\n{c.score:.3f} {c.text[:300]}")
