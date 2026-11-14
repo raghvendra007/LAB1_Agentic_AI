@@ -1,17 +1,16 @@
 diff --git a/src/tinyledger/io_csv.py b/src/tinyledger/io_csv.py
-index a139814..ecffacd 100644
+index a139814..bce9ab0 100644
 --- a/src/tinyledger/io_csv.py
 +++ b/src/tinyledger/io_csv.py
-@@ -22,11 +22,7 @@ def parse_date(text: str) -> date:
-     text = text.strip()
+@@ -23,10 +23,7 @@ def parse_date(text: str) -> date:
      if "-" in text:
          return date.fromisoformat(text)
--    first, second, year = (int(part) for part in text.split("."))
+     first, second, year = (int(part) for part in text.split("."))
 -    month, day = first, second
 -    if month > 12:
 -        # clearly the other way round
 -        month, day = second, first
-+    day, month, year = (int(part) for part in text.split("."))
++    day, month = first, second
      return date(year, month, day)
  
  
@@ -29,7 +28,7 @@ index f3030de..b5c44f6 100644
              balances[expense.payer] += expense.amount_cents
              shares = split_evenly(expense.amount_cents, len(expense.participants))
 diff --git a/src/tinyledger/money.py b/src/tinyledger/money.py
-index a161836..0052259 100644
+index a161836..bf596d7 100644
 --- a/src/tinyledger/money.py
 +++ b/src/tinyledger/money.py
 @@ -37,5 +37,5 @@ def split_evenly(total_cents: int, parts: int) -> list[int]:
@@ -39,4 +38,4 @@ index a161836..0052259 100644
 -    share = total_cents // parts
 -    return [share] * parts
 +    share, remainder = divmod(total_cents, parts)
-+    return [share + (1 if index < remainder else 0) for index in range(parts)]
++    return [share + (1 if i < remainder else 0) for i in range(parts)]

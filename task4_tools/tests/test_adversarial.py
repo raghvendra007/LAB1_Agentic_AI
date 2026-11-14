@@ -1,8 +1,4 @@
-"""Extra adversarial tests for Task 4 containment.
-
-These go beyond the public contract tests and mirror the kinds of attacks
-the hidden grader is likely to try.
-"""
+"""Extra containment tests for Task 4 (path escapes, bad input, timeouts)."""
 
 from __future__ import annotations
 
